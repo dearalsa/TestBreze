@@ -3,6 +3,7 @@ import { Head, usePage, Link } from '@inertiajs/react';
 import { FaArrowLeft, FaUser, FaRegUser } from 'react-icons/fa';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
+import Footer from '@/Components/Footer';
 
 export default function Show() {
   const { student } = usePage().props;

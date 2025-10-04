@@ -2,6 +2,8 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, usePage, router } from '@inertiajs/react';
 import { useState } from 'react';
 import { Bar, Pie } from 'react-chartjs-2';
+import Footer from '@/Components/Footer';
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -306,6 +308,8 @@ export default function Index() {
           </div>
         )}
       </div>
+
+      
     </AuthenticatedLayout>
   );
 }
