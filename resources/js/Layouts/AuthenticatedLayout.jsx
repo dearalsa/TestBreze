@@ -159,8 +159,6 @@ export default function AuthenticatedLayout({ header, children }) {
           <main className="flex-1 p-6 bg-white">{children}</main>
         </div>
       </div>
-
-      {/* Footer selalu di bawah */}
       <Footer />
     </div>
   );

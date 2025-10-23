@@ -8,16 +8,25 @@ export default function Index() {
   const [search, setSearch] = useState('');
   const [entriesPerPage, setEntriesPerPage] = useState(10); 
 
+  // Filter data berdasarkan pencarian
   const filteredTeachers = teachers.filter(teacher =>
     teacher.nama_lengkap.toLowerCase().includes(search.toLowerCase())
   );
-  const displayedTeachers = filteredTeachers.slice(0, entriesPerPage);
+
+  // 🔽 Sorting A-Z berdasarkan nama_lengkap
+  const sortedTeachers = [...filteredTeachers].sort((a, b) =>
+    a.nama_lengkap.localeCompare(b.nama_lengkap, 'id', { sensitivity: 'base' })
+  );
+
+  // Data yang ditampilkan
+  const displayedTeachers = sortedTeachers.slice(0, entriesPerPage);
 
   const handleDelete = (id) => {
     if (confirm('Apakah Anda yakin ingin menghapus data guru ini?')) {
       router.delete(route('teachers.destroy', id));
     }
   };
+
   const handleEntriesChange = (e) => {
     setEntriesPerPage(Number(e.target.value));
   };
@@ -119,6 +128,12 @@ export default function Index() {
               )}
             </tbody>
           </table>
+        </div>
+
+        {/* 🔽 Tambahan: Info jumlah data ditampilkan */}
+        <div className="mt-3 text-sm text-gray-600">
+          Menampilkan {sortedTeachers.length === 0 ? 0 : 1} sampai{' '}
+          {Math.min(entriesPerPage, sortedTeachers.length)} dari {sortedTeachers.length} data guru
         </div>
       </div>
     </AuthenticatedLayout>

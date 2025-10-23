@@ -21,6 +21,7 @@ export default function IndexInventories() {
     setCurrentPage(1);
   };
 
+  // 🔍 Filter pencarian
   const filteredInventories = useMemo(() => {
     return inventories.filter((item) =>
       Object.values(item).some((value) =>
@@ -29,14 +30,22 @@ export default function IndexInventories() {
     );
   }, [inventories, searchTerm]);
 
-  const totalEntries = filteredInventories.length;
+  // 🔠 Sorting A-Z berdasarkan nama_barang
+  const sortedInventories = useMemo(() => {
+    return [...filteredInventories].sort((a, b) =>
+      a.nama_barang.localeCompare(b.nama_barang, 'id', { sensitivity: 'base' })
+    );
+  }, [filteredInventories]);
+
+  const totalEntries = sortedInventories.length;
   const totalPages = Math.ceil(totalEntries / entriesPerPage);
 
+  // 📄 Pagination
   const paginatedInventories = useMemo(() => {
     const startIndex = (currentPage - 1) * entriesPerPage;
     const endIndex = startIndex + entriesPerPage;
-    return filteredInventories.slice(startIndex, endIndex);
-  }, [filteredInventories, currentPage, entriesPerPage]);
+    return sortedInventories.slice(startIndex, endIndex);
+  }, [sortedInventories, currentPage, entriesPerPage]);
 
   const goToPage = (page) => {
     if (page >= 1 && page <= totalPages) {
@@ -150,6 +159,12 @@ export default function IndexInventories() {
               )}
             </tbody>
           </table>
+        </div>
+
+        {/* 🔽 Tambahan: Info jumlah data ditampilkan */}
+        <div className="mt-3 text-sm text-gray-600">
+          Menampilkan {totalEntries === 0 ? 0 : (currentPage - 1) * entriesPerPage + 1} sampai{' '}
+          {Math.min(currentPage * entriesPerPage, totalEntries)} dari {totalEntries} data barang
         </div>
 
         <div className="flex justify-end mt-4">

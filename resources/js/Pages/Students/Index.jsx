@@ -2,7 +2,6 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, usePage, router } from '@inertiajs/react';
 import { useState } from 'react';
 import { Bar, Pie } from 'react-chartjs-2';
-
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -39,6 +38,7 @@ export default function Index() {
     setCurrentPage(1);
   };
 
+  // 🔍 Filter pencarian
   const filteredStudents = students.filter(
     (s) =>
       s.nama_lengkap.toLowerCase().includes(search.toLowerCase()) ||
@@ -47,17 +47,27 @@ export default function Index() {
       s.angkatan.toLowerCase().includes(search.toLowerCase())
   );
 
+  // 🔤 Sorting nama dari A–Z
+  const sortedStudents = [...filteredStudents].sort((a, b) =>
+    a.nama_lengkap.localeCompare(b.nama_lengkap, 'id', { sensitivity: 'base' })
+  );
+
   const indexOfLast = currentPage * entries;
   const indexOfFirst = indexOfLast - entries;
-  const currentStudents = filteredStudents.slice(indexOfFirst, indexOfLast);
-  const totalPages = Math.ceil(filteredStudents.length / entries);
+  const currentStudents = sortedStudents.slice(indexOfFirst, indexOfLast);
+  const totalPages = Math.ceil(sortedStudents.length / entries);
 
+  // Chart data
   const total = students.length;
   const jurusanLabels = ['PPLG', 'Animasi', 'BCF', 'TPFL', 'TO'];
   const jurusanCounts = jurusanLabels.map((j) => students.filter((s) => s.jurusan === j).length);
 
   const laki = students.filter((s) => s.jenis_kelamin === 'Laki-laki').length;
   const perempuan = students.filter((s) => s.jenis_kelamin === 'Perempuan').length;
+
+  // Hitung jumlah siswa aktif dan tidak aktif
+  const aktif = students.filter((s) => s.is_active === '1').length;
+  const tidakAktif = students.filter((s) => s.is_active !== '1').length;
 
   const pieData = {
     labels: ['Laki-laki', 'Perempuan'],
@@ -91,13 +101,14 @@ export default function Index() {
     },
   };
 
+  // 🔁 Bar chart diganti dari per jurusan menjadi aktif vs tidak aktif
   const barData = {
-    labels: jurusanLabels,
+    labels: ['Aktif', 'Tidak Aktif'],
     datasets: [
       {
         label: 'Jumlah Siswa',
-        data: jurusanCounts,
-        backgroundColor: '#7c3aed',
+        data: [aktif, tidakAktif],
+        backgroundColor: ['#16a34a', '#dc2626'],
         borderRadius: 6,
         barPercentage: 0.5,
       },
@@ -112,13 +123,13 @@ export default function Index() {
       legend: { display: false },
       title: {
         display: true,
-        text: 'Jumlah Siswa per Jurusan',
+        text: 'Status Keaktifan Siswa',
         color: '#1f2937',
         font: { family: 'Comfortaa', size: 16, weight: '600' },
       },
       tooltip: {
         enabled: true,
-        backgroundColor: '#7c3aed',
+        backgroundColor: '#4b5563',
         titleColor: '#fff',
         bodyColor: '#fff',
         padding: 10,
@@ -141,7 +152,7 @@ export default function Index() {
   return (
     <AuthenticatedLayout>
       <Head title="Data Siswa" />
-      <div className="w-full flex-1 overflow-auto p-4 sm:p-6 font-comfortaa">
+      <div className="w-full flex-1 overflow-auto pl-2 pr-8 sm:pl-4 sm:pr-8 py-4 font-comfortaa">
         {flash.success && (
           <div className="mb-4 p-3 bg-green-100 text-green-800 rounded shadow">{flash.success}</div>
         )}
@@ -174,14 +185,14 @@ export default function Index() {
         </div>
 
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4 w-full">
-          <div className="flex items-center w-full md:w-auto md:max-w-xs h-10 border border-gray-300 rounded overflow-hidden"> 
+          <div className="flex items-center w-full md:w-auto md:max-w-xs h-10 border border-gray-300 rounded overflow-hidden">
             <FaSearch className="bg-blue-600 text-white p-2 h-11 w-9 flex items-center justify-center rounded-l" />
             <input
               type="text"
               placeholder="Cari siswa..."
               value={search}
               onChange={handleSearchChange}
-              className="py-2 **px-3** w-full md:w-72 focus:outline-none focus:ring-0 h-full text-gray-700 border-none"
+              className="py-2 px-3 w-full md:w-72 focus:outline-none focus:ring-0 h-full text-gray-700 border-none"
             />
           </div>
 
@@ -191,10 +202,10 @@ export default function Index() {
               <select
                 value={entries}
                 onChange={handleEntriesChange}
-                className="ml-1 border border-gray-300 rounded **py-2 px-3** focus:outline-none h-10 **bg-white appearance-none**"
+                className="ml-1 border border-gray-300 rounded py-2 px-3 focus:outline-none h-10 bg-white appearance-none"
               >
-                <option value={10}>5</option>
-                <option value={50}>10</option>
+                <option value={5}>5</option>
+                <option value={10}>10</option>
                 <option value={25}>25</option>
                 <option value={50}>50</option>
                 <option value={filteredStudents.length}>Semua</option>
@@ -209,7 +220,7 @@ export default function Index() {
           </div>
         </div>
 
-        {/* ini adalah tabel siswa */}
+        {/* Tabel siswa */}
         <div className="overflow-x-auto bg-white rounded-xl shadow-lg w-full">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-100">
@@ -278,6 +289,12 @@ export default function Index() {
           </table>
         </div>
 
+        {/* Info jumlah data ditampilkan */}
+        <div className="mt-3 text-sm text-gray-600">
+          Menampilkan {filteredStudents.length === 0 ? 0 : indexOfFirst + 1} sampai{' '}
+          {Math.min(indexOfLast, filteredStudents.length)} dari {filteredStudents.length} data siswa
+        </div>
+
         {/* Pagination */}
         {totalPages > 1 && (
           <div className="flex justify-center md:justify-end items-center mt-4 gap-2 flex-wrap">
@@ -286,7 +303,9 @@ export default function Index() {
                 key={i}
                 onClick={() => setCurrentPage(i + 1)}
                 className={`px-3 py-1 rounded ${
-                  currentPage === i + 1 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  currentPage === i + 1
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                 } transition duration-150`}
               >
                 {i + 1}
@@ -295,8 +314,6 @@ export default function Index() {
           </div>
         )}
       </div>
-
-      
     </AuthenticatedLayout>
   );
 }
