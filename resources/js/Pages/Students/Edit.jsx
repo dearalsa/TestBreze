@@ -6,13 +6,17 @@ import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 
 export default function Edit() {
-  const { student } = usePage().props;
+  const { student, auth } = usePage().props; 
+  const initialAddedBy = typeof student.added_by === 'object' && student.added_by !== null
+    ? student.added_by.name || ''
+    : student.added_by || ''; 
 
-  const { data, setData, put, processing, errors } = useForm({
+  const { data, setData, post, processing, errors } = useForm({
+    _method: 'put',
     nisn: student.nisn || '',
     nama_lengkap: student.nama_lengkap || '',
     jenis_kelamin: student.jenis_kelamin || '',
-    foto_wajah: null,
+    foto_wajah: null, 
     tempat_lahir: student.tempat_lahir || '',
     tanggal_lahir: student.tanggal_lahir || '',
     alamat: student.alamat || '',
@@ -20,7 +24,7 @@ export default function Edit() {
     angkatan: student.angkatan || '',
     no_hp: student.no_hp || '',
     is_active: student.is_active ? 1 : 0,
-    added_by: student.added_by || '',
+    added_by_display: initialAddedBy,
   });
 
   const [preview, setPreview] = useState(null);
@@ -28,7 +32,9 @@ export default function Edit() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    put(route('students.update', student.id));
+    post(route('students.update', student.id), {
+        forceFormData: true, 
+    });
   };
 
   const handleFileChange = (e) => {
@@ -55,27 +61,23 @@ export default function Edit() {
         </Link>
 
         <h2 className="text-3xl font-bold text-gray-800 mb-8">Edit Data Siswa</h2>
-
-        <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-2xl p-6 space-y-6" encType="multipart/form-data">
-          
-          {/* NISN & Nama */}
+        <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-2xl p-6 space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label>NISN</label>
-              <input type="text" value={data.nisn} onChange={e => setData('nisn', e.target.value)} className={inputClass} />
-              {errors.nisn && <p className="text-red-500 text-sm">{errors.nisn}</p>}
+              <label className="block mb-1 font-medium">NISN</label>
+              <input type="text" value={data.nisn} onChange={e => setData('nisn', e.target.value)} className={inputClass} placeholder="Masukkan NISN" />
+              {errors.nisn && <p className="text-red-500 text-sm mt-1">{errors.nisn}</p>}
             </div>
             <div>
-              <label>Nama Lengkap</label>
-              <input type="text" value={data.nama_lengkap} onChange={e => setData('nama_lengkap', e.target.value)} className={inputClass} />
-              {errors.nama_lengkap && <p className="text-red-500 text-sm">{errors.nama_lengkap}</p>}
+              <label className="block mb-1 font-medium">Nama Lengkap</label>
+              <input type="text" value={data.nama_lengkap} onChange={e => setData('nama_lengkap', e.target.value)} className={inputClass} placeholder="Masukkan Nama Lengkap" />
+              {errors.nama_lengkap && <p className="text-red-500 text-sm mt-1">{errors.nama_lengkap}</p>}
             </div>
           </div>
 
-          {/* Jenis Kelamin & Foto */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label>Jenis Kelamin</label>
+              <label className="block mb-1 font-medium">Jenis Kelamin</label>
               <select value={data.jenis_kelamin} onChange={e => setData('jenis_kelamin', e.target.value)} className={inputClass}>
                 <option value="">-- Pilih Jenis Kelamin --</option>
                 <option value="Laki-laki">Laki-laki</option>
@@ -83,35 +85,37 @@ export default function Edit() {
               </select>
             </div>
             <div>
-              <label>Foto Wajah</label>
+              <label className="block mb-1 font-medium">Foto Wajah</label>
               <input type="file" accept="image/*" onChange={handleFileChange} className={fileClass} />
+              
               {(preview || student.foto_wajah) && (
-                <img src={preview || `/storage/${student.foto_wajah}`} alt="Preview" className="mt-2 w-32 h-32 object-cover rounded-xl border" />
+                <div className="mt-4">
+                    <p className="text-sm text-gray-600 mb-2">Foto Saat Ini/Preview Baru:</p>
+                    <img src={preview || `/storage/${student.foto_wajah}`} alt="Foto Wajah Siswa" className="w-32 h-32 object-cover rounded-xl border-2 border-gray-200 shadow-sm" />
+                </div>
               )}
             </div>
           </div>
 
-          {/* Tempat, Tanggal, Angkatan */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
-              <label>Tempat Lahir</label>
-              <input type="text" value={data.tempat_lahir} onChange={e => setData('tempat_lahir', e.target.value)} className={inputClass} />
+              <label className="block mb-1 font-medium">Tempat Lahir</label>
+              <input type="text" value={data.tempat_lahir} onChange={e => setData('tempat_lahir', e.target.value)} className={inputClass} placeholder="Contoh: Bandung" />
             </div>
             <div>
-              <label>Tanggal Lahir</label>
+              <label className="block mb-1 font-medium">Tanggal Lahir</label>
               <input type="date" value={data.tanggal_lahir} onChange={e => setData('tanggal_lahir', e.target.value)} className={inputClass} />
-              {formattedTanggal && <p className="text-gray-500 text-sm">Format: {formattedTanggal}</p>}
+              {formattedTanggal && <p className="text-gray-500 text-sm mt-1">Format: {formattedTanggal}</p>}
             </div>
             <div>
-              <label>Angkatan</label>
-              <input type="text" value={data.angkatan} onChange={e => setData('angkatan', e.target.value)} className={inputClass} />
+              <label className="block mb-1 font-medium">Angkatan</label>
+              <input type="text" value={data.angkatan} onChange={e => setData('angkatan', e.target.value)} className={inputClass} placeholder="Contoh: 17" />
             </div>
           </div>
 
-          {/* Jurusan & No HP */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label>Jurusan</label>
+              <label className="block mb-1 font-medium">Jurusan</label>
               <select value={data.jurusan} onChange={e => setData('jurusan', e.target.value)} className={inputClass}>
                 <option value="">-- Pilih Jurusan --</option>
                 <option value="PPLG">PPLG</option>
@@ -122,35 +126,33 @@ export default function Edit() {
               </select>
             </div>
             <div>
-              <label>No HP</label>
-              <input type="text" value={data.no_hp} onChange={e => setData('no_hp', e.target.value)} className={inputClass} />
+              <label className="block mb-1 font-medium">No HP</label>
+              <input type="text" value={data.no_hp} onChange={e => setData('no_hp', e.target.value)} className={inputClass} placeholder="Contoh: 0812xxxxxx" />
             </div>
           </div>
 
-          {/* Alamat */}
           <div>
-            <label>Alamat</label>
-            <textarea value={data.alamat} onChange={e => setData('alamat', e.target.value)} className={inputClass} rows={3}></textarea>
+            <label className="block mb-1 font-medium">Alamat</label>
+            <textarea value={data.alamat} onChange={e => setData('alamat', e.target.value)} className={inputClass} rows={3} placeholder="Masukkan Alamat Lengkap"></textarea>
           </div>
 
-          {/* Status & Added By */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label>Status</label>
+              <label className="block mb-1 font-medium">Status</label>
               <select value={data.is_active} onChange={e => setData('is_active', Number(e.target.value))} className={inputClass}>
                 <option value={1}>Aktif</option>
                 <option value={0}>Tidak Aktif</option>
               </select>
             </div>
             <div>
-              <label>Added By</label>
-              <input type="text" value={data.added_by} onChange={e => setData('added_by', e.target.value)} className={inputClass} />
+              <label className="block mb-1 font-medium">Added By</label>
+              <input type="text" value={data.added_by_display} className={`${inputClass} bg-gray-100 cursor-not-allowed`} readOnly disabled />
             </div>
           </div>
 
-          <div className="flex justify-end">
-            <button type="submit" disabled={processing} className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-8 rounded-xl">
-              {processing ? 'Menyimpan...' : 'Update'}
+          <div className="flex justify-end pt-4">
+            <button type="submit" disabled={processing} className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-8 rounded-xl transition duration-150 ease-in-out">
+              {processing ? 'Menyimpan...' : 'Update Data'}
             </button>
           </div>
 

@@ -1,20 +1,23 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, usePage } from "@inertiajs/react";
+import { FaChalkboardTeacher, FaBox } from "react-icons/fa";
 import { motion } from "framer-motion";
-import { 
-  FaHome, 
-  FaUser, 
-  FaSignOutAlt, 
-  FaAngleDoubleLeft, 
-  FaAngleDoubleRight, 
-  FaFileAlt 
+import {
+  FaHome,
+  FaUserCircle,
+  FaSignOutAlt,
+  FaAngleDoubleLeft,
+  FaAngleDoubleRight,
+  FaFileAlt,
 } from "react-icons/fa";
-import Footer from '@/Components/Footer';
+import Footer from "@/Components/Footer";
 
 export default function AuthenticatedLayout({ header, children }) {
   const { user } = usePage().props.auth;
   const [collapsed, setCollapsed] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
@@ -22,13 +25,25 @@ export default function AuthenticatedLayout({ header, children }) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Tutup dropdown kalau klik di luar
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   const autoCollapsed = windowWidth < 768;
 
+  // Sidebar menu
   const menuItems = [
     { name: "Dashboard", href: route("dashboard"), icon: <FaHome /> },
-    { name: "Profile", href: route("profile.edit"), icon: <FaUser /> },
     { name: "Data Siswa", href: route("students.index"), icon: <FaFileAlt /> },
-    { name: "Logout", href: route("logout"), icon: <FaSignOutAlt />, method: "post", as: "button" },
+    { name: "Data Guru", href: route("teachers.index"), icon: <FaChalkboardTeacher /> },
+    { name: "Data Barang", href: route("inventories.index"), icon: <FaBox /> },
   ];
 
   const menuItemVariants = {
@@ -50,10 +65,10 @@ export default function AuthenticatedLayout({ header, children }) {
           transition={{ duration: 0.3 }}
           className="bg-[#3b5998] rounded-3xl mx-4 my-4 flex flex-col justify-between p-4 text-white relative shadow-lg"
         >
-          {/* Header / Judul Sidebar */}
+          {/* Header Sidebar */}
           <div className="flex items-center mb-6 justify-between">
             {!(collapsed || autoCollapsed) && (
-              <span className="text-white font-semibold text-lg">Dashboard</span>
+              <span className="text-white font-semibold text-lg">Menu</span>
             )}
             <button
               onClick={() => setCollapsed(!collapsed)}
@@ -63,7 +78,7 @@ export default function AuthenticatedLayout({ header, children }) {
             </button>
           </div>
 
-          {/* Menu */}
+          {/* Menu List */}
           <nav className="flex-1 flex flex-col gap-3">
             {menuItems.map((item) => (
               <motion.div
@@ -90,7 +105,7 @@ export default function AuthenticatedLayout({ header, children }) {
             ))}
           </nav>
 
-          {/* User Info */}
+          {/* Info User di Bawah Sidebar */}
           {!collapsed && !autoCollapsed && (
             <motion.div
               className="mt-auto px-3 py-3 rounded-full bg-white/20 text-white text-sm"
@@ -106,11 +121,41 @@ export default function AuthenticatedLayout({ header, children }) {
 
         {/* Main Content */}
         <div className="flex-1 flex flex-col">
-          {header && (
-            <header className="px-6 pt-6 pb-2 bg-white">
-              {header}
-            </header>
-          )}
+          {/* Header bagian atas */}
+          <header className="px-6 pt-6 pb-2 bg-white flex justify-between items-center">
+            {header && <div>{header}</div>}
+
+            {/* Profil di kanan atas */}
+            <div className="relative" ref={dropdownRef}>
+              <button
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className="flex items-center gap-2 bg-[#3b5998] text-white px-3 py-2 rounded-full hover:bg-[#2d4373] transition"
+              >
+                <FaUserCircle className="text-2xl" />
+                <span className="hidden md:inline">{user.name}</span>
+              </button>
+
+              {dropdownOpen && (
+                <div className="absolute right-0 mt-2 w-40 bg-white text-gray-800 rounded-lg shadow-lg z-50 overflow-hidden">
+                  <Link
+                    href={route("profile.edit")}
+                    className="block px-4 py-2 hover:bg-gray-100 transition"
+                  >
+                    Profile
+                  </Link>
+                  <Link
+                    href={route("logout")}
+                    method="post"
+                    as="button"
+                    className="block w-full text-left px-4 py-2 hover:bg-gray-100 transition"
+                  >
+                    Logout
+                  </Link>
+                </div>
+              )}
+            </div>
+          </header>
+
           <main className="flex-1 p-6 bg-white">{children}</main>
         </div>
       </div>

@@ -8,9 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Student extends Model
 {
     use HasFactory;
-
     protected $fillable = [
-        'id',
         'nisn',
         'nama_lengkap',
         'jenis_kelamin',
@@ -21,7 +19,11 @@ class Student extends Model
         'jurusan',
         'angkatan',
         'no_hp',
-        'added_by',
-        'is_active', 
+        'added_by', 
+        'is_active',
     ];
+    public function addedBy()
+    {
+        return $this->belongsTo(User::class, 'added_by');
+    }
 }

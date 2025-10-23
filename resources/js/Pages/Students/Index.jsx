@@ -2,7 +2,6 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, usePage, router } from '@inertiajs/react';
 import { useState } from 'react';
 import { Bar, Pie } from 'react-chartjs-2';
-import Footer from '@/Components/Footer';
 
 import {
   Chart as ChartJS,
@@ -142,8 +141,6 @@ export default function Index() {
   return (
     <AuthenticatedLayout>
       <Head title="Data Siswa" />
-
-      {/* Bagian utama dengan padding dan font */}
       <div className="w-full flex-1 overflow-auto p-4 sm:p-6 font-comfortaa">
         {flash.success && (
           <div className="mb-4 p-3 bg-green-100 text-green-800 rounded shadow">{flash.success}</div>
@@ -151,7 +148,6 @@ export default function Index() {
 
         <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-6">Daftar Data Siswa</h2>
 
-        {/* Summary Cards - Grid responsif */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-6 w-full">
           <div className="bg-gradient-to-r from-blue-400 to-blue-600 text-white p-4 rounded-xl shadow-lg col-span-2 sm:col-span-1">
             <p className="text-sm opacity-80">Total Siswa</p>
@@ -168,7 +164,6 @@ export default function Index() {
           ))}
         </div>
 
-        {/* Grafik - Tinggi diatur agar responsif */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 w-full">
           <div className="bg-white p-4 rounded-xl shadow-lg w-full h-[300px] md:h-[400px]">
             <Pie data={pieData} options={pieOptions} />
@@ -178,15 +173,9 @@ export default function Index() {
           </div>
         </div>
 
-        {/* Search + Entries + Tambah Data - PERBAIKAN TOTAL */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4 w-full">
-          {/* Search Bar Container - Menyatukan ikon dan input */}
           <div className="flex items-center w-full md:w-auto md:max-w-xs h-10 border border-gray-300 rounded overflow-hidden"> 
-            
-            {/* Search Icon - Diberi warna biru dan padding yang pas */}
             <FaSearch className="bg-blue-600 text-white p-2 h-11 w-9 flex items-center justify-center rounded-l" />
-            
-            {/* Search Input - Dihilangkan border, padding diatur agar tidak terlalu mepet dengan ikon. */}
             <input
               type="text"
               placeholder="Cari siswa..."
@@ -196,33 +185,31 @@ export default function Index() {
             />
           </div>
 
-          {/* Entries + Tambah Data */}
           <div className="flex items-center gap-4 w-full md:w-auto justify-between flex-wrap">
-            {/* Entries Select - Perbaikan penampilan dan konsistensi tinggi */}
             <label className="flex items-center gap-2 text-gray-700 whitespace-nowrap">
-              Entries:
+              Tampilkan:
               <select
                 value={entries}
                 onChange={handleEntriesChange}
-                // appearance-none untuk tampilan yang lebih konsisten antar browser, bg-white untuk kotak putih
                 className="ml-1 border border-gray-300 rounded **py-2 px-3** focus:outline-none h-10 **bg-white appearance-none**"
               >
-                <option value={10}>10</option>
+                <option value={10}>5</option>
+                <option value={50}>10</option>
+                <option value={25}>25</option>
                 <option value={50}>50</option>
-                <option value={100}>100</option>
+                <option value={filteredStudents.length}>Semua</option>
               </select>
             </label>
-            {/* Tambah Data Button - Ketinggian konsisten */}
             <Link
               href={route('students.create')}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded shadow transition duration-200 whitespace-nowrap h-10 flex items-center"
+              className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl focus:outline-none focus:ring-0"
             >
               + Tambah Data
             </Link>
           </div>
         </div>
 
-        {/* Tabel Siswa */}
+        {/* ini adalah tabel siswa */}
         <div className="overflow-x-auto bg-white rounded-xl shadow-lg w-full">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-100">

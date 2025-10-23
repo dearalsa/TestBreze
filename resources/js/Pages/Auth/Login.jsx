@@ -1,5 +1,7 @@
 import { useForm, Link, router } from "@inertiajs/react";
 import { motion } from "framer-motion";
+import { FaEye, FaEyeSlash } from "react-icons/fa"; // 👈 tambahin ini
+import { useState } from "react";
 
 export default function Login() {
   const { data, setData, post, processing, errors } = useForm({
@@ -8,13 +10,13 @@ export default function Login() {
     remember: false,
   });
 
+  const [showPassword, setShowPassword] = useState(false); // 👈 state buat icon mata
+
   const submit = (e) => {
     e.preventDefault();
 
-    // kirim data ke route login Breeze
     post(route("login"), {
       onSuccess: () => {
-        // otomatis redirect ke dashboard jika berhasil
         router.visit(route("dashboard"));
       },
     });
@@ -48,15 +50,22 @@ export default function Login() {
             {errors.email && <div className="text-red-500 text-xs font-comfortaa">{errors.email}</div>}
           </div>
 
-          <div>
+          <div className="relative">
             <label className="block text-sm text-gray-700 font-comfortaa">Password</label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"} // 👈 ubah tipe input
               value={data.password}
               onChange={(e) => setData("password", e.target.value)}
               placeholder="Enter your password"
-              className="mt-2 block w-full appearance-none border-0 border-b-2 border-[#3b5998]/40 bg-transparent text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-0 focus:border-[#3b5998] transition font-comfortaa text-sm sm:text-base"
+              className="mt-2 block w-full appearance-none border-0 border-b-2 border-[#3b5998]/40 bg-transparent text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-0 focus:border-[#3b5998] transition font-comfortaa text-sm sm:text-base pr-10"
             />
+            <div
+              className="absolute right-0 bottom-2 translate-y-[-50%] pr-2 cursor-pointer text-[#3b5998]"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </div>
+
             {errors.password && <div className="text-red-500 text-xs font-comfortaa">{errors.password}</div>}
           </div>
 

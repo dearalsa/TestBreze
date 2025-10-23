@@ -5,7 +5,7 @@ import { FaArrowLeft } from 'react-icons/fa';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 
-export default function Create() {
+export default function Create({ user }) { 
   const { data, setData, post, processing, errors } = useForm({
     nisn: '',
     nama_lengkap: '',
@@ -17,8 +17,7 @@ export default function Create() {
     jurusan: '',
     angkatan: '',
     no_hp: '',
-    is_active: '', // status akan dikonversi ke angka
-    added_by: '', 
+    is_active: '', 
   });
 
   const [preview, setPreview] = useState(null);
@@ -39,7 +38,6 @@ export default function Create() {
     }
   };
 
-  // Update format tanggal lahir saat user memilih tanggal
   useEffect(() => {
     if (data.tanggal_lahir) {
       const date = new Date(data.tanggal_lahir);
@@ -58,7 +56,6 @@ export default function Create() {
     <AuthenticatedLayout>
       <Head title="Tambah Data Siswa" />
       <div className="w-full max-w-4xl mx-auto p-6 font-comfortaa">
-        {/* Kembali */}
         <Link
           href={route('students.index')}
           className="flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-6"
@@ -66,14 +63,14 @@ export default function Create() {
           <FaArrowLeft /> Kembali ke Daftar Siswa
         </Link>
 
-        <h2 className="text-3xl font-bold text-gray-800 mb-8">Tambah Data Siswa</h2>
+        <h2 className="text-3xl font-bold text-gray-800 mb-6">Tambah Data Siswa</h2>
 
         <form
           onSubmit={handleSubmit}
           className="bg-white shadow-md rounded-2xl p-6 space-y-6"
           encType="multipart/form-data"
         >
-          {/* NISN & Nama */}
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-gray-700 font-semibold mb-1">NISN</label>
@@ -99,7 +96,6 @@ export default function Create() {
             </div>
           </div>
 
-          {/* Jenis Kelamin & Foto */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-gray-700 font-semibold mb-1">Jenis Kelamin</label>
@@ -129,7 +125,6 @@ export default function Create() {
             </div>
           </div>
 
-          {/* Tempat, Tanggal Lahir & Angkatan */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
               <label className="block text-gray-700 font-semibold mb-1">Tempat Lahir</label>
@@ -164,8 +159,6 @@ export default function Create() {
               />
             </div>
           </div>
-
-          {/* Jurusan & No HP */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-gray-700 font-semibold mb-1">Jurusan</label>
@@ -194,7 +187,6 @@ export default function Create() {
             </div>
           </div>
 
-          {/* Alamat */}
           <div>
             <label className="block text-gray-700 font-semibold mb-1">Alamat</label>
             <textarea
@@ -206,13 +198,12 @@ export default function Create() {
             ></textarea>
           </div>
 
-          {/* Status Aktif & Added By */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-gray-700 font-semibold mb-1">Status</label>
               <select
                 value={data.is_active}
-                onChange={(e) => setData('is_active', Number(e.target.value))} // <-- konversi ke angka
+                onChange={(e) => setData('is_active', Number(e.target.value))}
                 className={inputClass}
               >
                 <option value="">Pilih Status</option>
@@ -224,15 +215,13 @@ export default function Create() {
               <label className="block text-gray-700 font-semibold mb-1">Added By</label>
               <input
                 type="text"
-                value={data.added_by}
-                onChange={(e) => setData('added_by', e.target.value)}
-                placeholder="Ditambahkan oleh"
-                className={inputClass}
+                value={user.name} 
+                readOnly
+                className={inputClass + ' bg-gray-100 cursor-not-allowed'}
               />
             </div>
           </div>
 
-          {/* Submit Button */}
           <div className="flex justify-end">
             <button
               type="submit"
