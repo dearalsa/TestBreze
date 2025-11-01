@@ -19,6 +19,7 @@ export default function CreateInventories() {
 
   const [barcodeInput, setBarcodeInput] = useState('');
 
+  // Barcode scanner input listener (deteksi input cepat dari scanner)
   useEffect(() => {
     let buffer = '';
     let timer;
@@ -65,7 +66,9 @@ export default function CreateInventories() {
           <FaArrowLeft /> Kembali ke Daftar Barang
         </Link>
 
-        <h2 className="text-3xl font-bold text-gray-800 mb-6">Tambah Barang Baru</h2>
+        <h2 className="text-3xl font-bold text-gray-800 mb-6">
+          Tambah Barang Baru
+        </h2>
 
         <form
           onSubmit={handleSubmit}
@@ -84,7 +87,9 @@ export default function CreateInventories() {
                 className={inputClass}
               />
               {errors.kode_barang && (
-                <p className="text-red-500 text-sm mt-1">{errors.kode_barang}</p>
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.kode_barang}
+                </p>
               )}
               {barcodeInput && (
                 <p className="text-green-600 text-sm mt-1">
@@ -105,7 +110,9 @@ export default function CreateInventories() {
                 className={inputClass}
               />
               {errors.nama_barang && (
-                <p className="text-red-500 text-sm mt-1">{errors.nama_barang}</p>
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.nama_barang}
+                </p>
               )}
             </div>
           </div>
@@ -127,7 +134,9 @@ export default function CreateInventories() {
               ))}
             </select>
             {errors.category_id && (
-              <p className="text-red-500 text-sm mt-1">{errors.category_id}</p>
+              <p className="text-red-500 text-sm mt-1">
+                {errors.category_id}
+              </p>
             )}
           </div>
 
@@ -144,7 +153,9 @@ export default function CreateInventories() {
               min="1"
             />
             {errors.jumlah_barang && (
-              <p className="text-red-500 text-sm mt-1">{errors.jumlah_barang}</p>
+              <p className="text-red-500 text-sm mt-1">
+                {errors.jumlah_barang}
+              </p>
             )}
           </div>
 
@@ -160,7 +171,9 @@ export default function CreateInventories() {
               rows={3}
             ></textarea>
             {errors.deskripsi && (
-              <p className="text-red-500 text-sm mt-1">{errors.deskripsi}</p>
+              <p className="text-red-500 text-sm mt-1">
+                {errors.deskripsi}
+              </p>
             )}
           </div>
 
@@ -168,13 +181,17 @@ export default function CreateInventories() {
             <label className="block text-gray-700 font-semibold mb-1">
               Status Barang
             </label>
-            <input
-              type="text"
-              placeholder="Masukkan status barang (misal: Baru, Bekas, Rusak)"
+            <select
               value={data.status}
               onChange={(e) => setData('status', e.target.value)}
               className={inputClass}
-            />
+            >
+              <option value="">Pilih Status</option>
+              <option value="Tersedia">Tersedia</option>
+              <option value="Dipinjam">Dipinjam</option>
+              <option value="Baru">Baru</option>
+              <option value="Rusak">Rusak</option>
+            </select>
             {errors.status && (
               <p className="text-red-500 text-sm mt-1">{errors.status}</p>
             )}
@@ -192,7 +209,9 @@ export default function CreateInventories() {
               className={inputClass}
             />
             {errors.lokasi_barang && (
-              <p className="text-red-500 text-sm mt-1">{errors.lokasi_barang}</p>
+              <p className="text-red-500 text-sm mt-1">
+                {errors.lokasi_barang}
+              </p>
             )}
           </div>
 
@@ -202,16 +221,13 @@ export default function CreateInventories() {
             </label>
             <select
               value={data.is_active}
-              onChange={(e) => setData('is_active', e.target.value === '1')}
+              onChange={(e) => setData('is_active', e.target.value)}
               className={inputClass}
             >
               <option value="">Pilih Status</option>
               <option value="1">Aktif</option>
               <option value="0">Tidak Aktif</option>
             </select>
-            {errors.is_active && (
-              <p className="text-red-500 text-sm mt-1">{errors.is_active}</p>
-            )}
           </div>
 
           <div className="flex justify-end">

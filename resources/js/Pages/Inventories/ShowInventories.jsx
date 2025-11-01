@@ -51,7 +51,11 @@ export default function ShowInventories() {
             <InfoRow label="ID" value={inventory.id ?? '-'} />
             <InfoRow label="Kode Barang" value={inventory.kode_barang ?? '-'} />
             <InfoRow label="Nama Barang" value={inventory.nama_barang ?? '-'} />
-            <InfoRow label="Kategori" value={inventory.kategori ?? '-'} />
+            <InfoRow
+              label="Kategori"
+              value={inventory.category?.category_name ?? '-'}
+            />
+
             <InfoRow label="Jumlah Barang" value={inventory.jumlah_barang ?? '-'} />
             <InfoRow label="Status Barang" value={inventory.status ?? '-'} />
             <InfoRow label="Deskripsi" value={inventory.deskripsi ?? '-'} />

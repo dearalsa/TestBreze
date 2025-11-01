@@ -9,7 +9,7 @@ export default function EditInventories({ inventory }) {
   const { data, setData, put, processing, errors } = useForm({
     kode_barang: inventory.kode_barang || '',
     nama_barang: inventory.nama_barang || '',
-    category_id: inventory.category_id || '',
+    category_id: inventory.category_id || inventory.category?.id || '',
     jumlah_barang: inventory.jumlah_barang || '',
     deskripsi: inventory.deskripsi || '',
     status: inventory.status || '',
@@ -24,14 +24,12 @@ export default function EditInventories({ inventory }) {
     let timer;
 
     const handleKeydown = (e) => {
-      const tag = e.target.tagName.toLowerCase();
-      if (tag === 'input' || tag === 'textarea' || e.target.isContentEditable) return;
-
       if (timer) clearTimeout(timer);
-
       if (e.key !== 'Enter') {
         buffer += e.key;
-        timer = setTimeout(() => (buffer = ''), 100);
+        timer = setTimeout(() => {
+          buffer = '';
+        }, 100);
       } else {
         if (buffer.length > 3) {
           setData('kode_barang', buffer);
@@ -51,14 +49,7 @@ export default function EditInventories({ inventory }) {
   };
 
   const inputClass =
-    'w-full border border-gray-300 rounded-xl p-3 bg-gray-50 text-base focus:outline-none focus:ring-0 focus:border-gray-300 focus:bg-gray-50';
-
-  const statusOptions = [
-    { value: '', label: 'Pilih Status' },
-    { value: 'Baru', label: 'Baru' },
-    { value: 'Bekas', label: 'Bekas' },
-    { value: 'Rusak', label: 'Rusak' },
-  ];
+    'w-full border border-gray-300 rounded-xl p-3 bg-gray-50 text-base focus:outline-none focus:ring-0 focus:border-gray-300';
 
   return (
     <AuthenticatedLayout>
@@ -73,22 +64,171 @@ export default function EditInventories({ inventory }) {
 
         <h2 className="text-3xl font-bold text-gray-800 mb-6">Edit Barang</h2>
 
-        <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-2xl p-6 space-y-6">
-          <InventoryFormFields
-            data={data}
-            setData={setData}
-            errors={errors}
-            barcodeInput={barcodeInput}
-            inputClass={inputClass}
-            statusOptions={statusOptions}
-            categories={categories}
-          />
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white shadow-md rounded-2xl p-6 space-y-6"
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-gray-700 font-semibold mb-1">
+                Kode Barang
+              </label>
+              <input
+                type="text"
+                placeholder="Scan atau ubah kode barang"
+                value={data.kode_barang}
+                onChange={(e) => setData('kode_barang', e.target.value)}
+                className={inputClass}
+              />
+              {errors.kode_barang && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.kode_barang}
+                </p>
+              )}
+              {barcodeInput && (
+                <p className="text-green-600 text-sm mt-1">
+                  Barcode baru terdeteksi: {barcodeInput}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-gray-700 font-semibold mb-1">
+                Nama Barang
+              </label>
+              <input
+                type="text"
+                placeholder="Masukkan nama barang"
+                value={data.nama_barang}
+                onChange={(e) => setData('nama_barang', e.target.value)}
+                className={inputClass}
+              />
+              {errors.nama_barang && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.nama_barang}
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-gray-700 font-semibold mb-1">
+              Kategori Barang
+            </label>
+            <select
+              value={data.category_id}
+              onChange={(e) => setData('category_id', e.target.value)}
+              className={inputClass}
+            >
+              <option value="">Pilih Kategori</option>
+              {categories?.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.category_name}
+                </option>
+              ))}
+            </select>
+            {errors.category_id && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.category_id}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-gray-700 font-semibold mb-1">
+              Jumlah Barang
+            </label>
+            <input
+              type="number"
+              placeholder="Masukkan jumlah barang"
+              value={data.jumlah_barang}
+              onChange={(e) => setData('jumlah_barang', e.target.value)}
+              className={inputClass}
+              min="1"
+            />
+            {errors.jumlah_barang && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.jumlah_barang}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-gray-700 font-semibold mb-1">
+              Deskripsi
+            </label>
+            <textarea
+              placeholder="Masukkan deskripsi barang"
+              value={data.deskripsi}
+              onChange={(e) => setData('deskripsi', e.target.value)}
+              className={inputClass}
+              rows={3}
+            ></textarea>
+            {errors.deskripsi && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.deskripsi}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-gray-700 font-semibold mb-1">
+              Status Barang
+            </label>
+            <select
+              value={data.status}
+              onChange={(e) => setData('status', e.target.value)}
+              className={inputClass}
+            >
+              <option value="">Pilih Status</option>
+              <option value="Tersedia">Tersedia</option>
+              <option value="Dipinjam">Dipinjam</option>
+              <option value="Baru">Baru</option>
+              <option value="Rusak">Rusak</option>
+            </select>
+            {errors.status && (
+              <p className="text-red-500 text-sm mt-1">{errors.status}</p>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-gray-700 font-semibold mb-1">
+              Lokasi Barang
+            </label>
+            <input
+              type="text"
+              placeholder="Masukkan lokasi barang"
+              value={data.lokasi_barang}
+              onChange={(e) => setData('lokasi_barang', e.target.value)}
+              className={inputClass}
+            />
+            {errors.lokasi_barang && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.lokasi_barang}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <label className="block mb-1 font-semibold text-gray-700">
+              Status Aktif/Tidak Aktif
+            </label>
+            <select
+              value={data.is_active}
+              onChange={(e) => setData('is_active', e.target.value)}
+              className={inputClass}
+            >
+              <option value="">Pilih Status</option>
+              <option value="1">Aktif</option>
+              <option value="0">Tidak Aktif</option>
+            </select>
+          </div>
 
           <div className="flex justify-end">
             <button
               type="submit"
               disabled={processing}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-8 rounded-xl transition duration-150 ease-in-out"
+              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-xl disabled:opacity-50"
             >
               {processing ? 'Menyimpan...' : 'Update Data'}
             </button>
@@ -96,124 +236,5 @@ export default function EditInventories({ inventory }) {
         </form>
       </div>
     </AuthenticatedLayout>
-  );
-}
-
-function InventoryFormFields({ data, setData, errors, barcodeInput, inputClass, statusOptions, categories }) {
-  return (
-    <>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label className="block text-gray-700 font-semibold mb-1">Kode Barang</label>
-          <input
-            type="text"
-            placeholder="Scan atau ubah kode barang"
-            value={data.kode_barang}
-            onChange={(e) => setData('kode_barang', e.target.value)}
-            className={inputClass}
-          />
-          {errors.kode_barang && <p className="text-red-500 text-sm mt-1">{errors.kode_barang}</p>}
-          {barcodeInput && <p className="text-green-600 text-sm mt-1">Barcode baru terdeteksi: {barcodeInput}</p>}
-        </div>
-
-        <div>
-          <label className="block text-gray-700 font-semibold mb-1">Nama Barang</label>
-          <input
-            type="text"
-            placeholder="Masukkan nama barang"
-            value={data.nama_barang}
-            onChange={(e) => setData('nama_barang', e.target.value)}
-            className={inputClass}
-          />
-          {errors.nama_barang && <p className="text-red-500 text-sm mt-1">{errors.nama_barang}</p>}
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label className="block text-gray-700 font-semibold mb-1">Kategori Barang</label>
-          <select
-            value={data.category_id}
-            onChange={(e) => setData('category_id', e.target.value)}
-            className={inputClass}
-          >
-            <option value="">Pilih Kategori</option>
-            {categories?.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.category_name}
-              </option>
-            ))}
-          </select>
-          {errors.category_id && <p className="text-red-500 text-sm mt-1">{errors.category_id}</p>}
-        </div>
-
-        <div>
-          <label className="block text-gray-700 font-semibold mb-1">Jumlah Barang</label>
-          <input
-            type="number"
-            placeholder="Masukkan jumlah barang"
-            value={data.jumlah_barang}
-            onChange={(e) => setData('jumlah_barang', e.target.value)}
-            className={inputClass}
-            min="1"
-          />
-          {errors.jumlah_barang && <p className="text-red-500 text-sm mt-1">{errors.jumlah_barang}</p>}
-        </div>
-      </div>
-
-      <div>
-        <label className="block text-gray-700 font-semibold mb-1">Status Barang</label>
-        <select
-          value={data.status}
-          onChange={(e) => setData('status', e.target.value)}
-          className={inputClass}
-        >
-          {statusOptions.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-        {errors.status && <p className="text-red-500 text-sm mt-1">{errors.status}</p>}
-      </div>
-
-      <div>
-        <label className="block text-gray-700 font-semibold mb-1">Deskripsi</label>
-        <textarea
-          placeholder="Masukkan deskripsi barang"
-          value={data.deskripsi}
-          onChange={(e) => setData('deskripsi', e.target.value)}
-          className={inputClass}
-          rows={3}
-        ></textarea>
-        {errors.deskripsi && <p className="text-red-500 text-sm mt-1">{errors.deskripsi}</p>}
-      </div>
-
-      <div>
-        <label className="block text-gray-700 font-semibold mb-1">Lokasi Barang</label>
-        <input
-          type="text"
-          placeholder="Masukkan lokasi barang"
-          value={data.lokasi_barang}
-          onChange={(e) => setData('lokasi_barang', e.target.value)}
-          className={inputClass}
-        />
-        {errors.lokasi_barang && <p className="text-red-500 text-sm mt-1">{errors.lokasi_barang}</p>}
-      </div>
-
-      <div>
-        <label className="block mb-1 font-semibold text-gray-700">Status Aktif/Tidak Aktif</label>
-        <select
-          value={data.is_active}
-          onChange={(e) => setData('is_active', Number(e.target.value))}
-          className={inputClass}
-        >
-          <option value="">Pilih Status</option>
-          <option value={1}>Aktif</option>
-          <option value={0}>Tidak Aktif</option>
-        </select>
-        {errors.is_active && <p className="text-red-500 text-sm mt-1">{errors.is_active}</p>}
-      </div>
-    </>
   );
 }

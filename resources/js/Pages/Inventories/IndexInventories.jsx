@@ -21,14 +21,20 @@ export default function IndexInventories() {
     setCurrentPage(1);
   };
 
+  // Filter pencarian
   const filteredInventories = useMemo(() => {
-    return inventories.filter((item) =>
-      Object.values(item).some((value) =>
+    return inventories.filter((item) => {
+      const categoryName = item.category?.category_name || '';
+      return Object.values({
+        ...item,
+        category_name: categoryName,
+      }).some((value) =>
         String(value).toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    );
+      );
+    });
   }, [inventories, searchTerm]);
 
+  // Urutkan berdasarkan nama barang
   const sortedInventories = useMemo(() => {
     return [...filteredInventories].sort((a, b) =>
       a.nama_barang.localeCompare(b.nama_barang, 'id', { sensitivity: 'base' })
@@ -48,6 +54,7 @@ export default function IndexInventories() {
     if (page >= 1 && page <= totalPages) setCurrentPage(page);
   };
 
+  // Barcode scanner → otomatis cari barang
   useEffect(() => {
     let buffer = '';
     let timer;
@@ -99,8 +106,7 @@ export default function IndexInventories() {
                 <option value={totalEntries}>Semua</option>
               </select>
             </div>
-
-            {/* Fitur pencarian */}
+            
             <div className="relative">
               <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
               <input
@@ -115,7 +121,6 @@ export default function IndexInventories() {
               />
             </div>
 
-            {/* Tombol untuk tambah barang */}
             <Link
               href={route('inventories.create')}
               className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium"
@@ -125,7 +130,6 @@ export default function IndexInventories() {
           </div>
         </div>
 
-        {/* Tabel */}
         <div className="overflow-x-auto bg-white rounded-xl shadow-lg w-full">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-100">
@@ -139,6 +143,7 @@ export default function IndexInventories() {
                 <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 w-32">Aksi</th>
               </tr>
             </thead>
+            
             <tbody className="divide-y divide-gray-100">
               {paginatedInventories.length > 0 ? (
                 paginatedInventories.map((item, index) => (
@@ -148,7 +153,10 @@ export default function IndexInventories() {
                     </td>
                     <td className="px-4 py-3">{item.kode_barang}</td>
                     <td className="px-4 py-3">{item.nama_barang}</td>
-                    <td className="px-4 py-3">{item.kategori}</td>
+                    <td className="px-4 py-3">
+                      {item.category ? item.category.category_name : <span className="text-gray-400 italic">-</span>}
+                    </td>
+
                     <td className="px-4 py-3">{item.status}</td>
                     <td className="px-4 py-3">{item.lokasi_barang}</td>
                     <td className="px-4 py-3 text-left">
@@ -188,13 +196,11 @@ export default function IndexInventories() {
           </table>
         </div>
 
-        {/* Info Pagination */}
         <div className="mt-3 text-sm text-gray-600">
           Menampilkan {totalEntries === 0 ? 0 : (currentPage - 1) * entriesPerPage + 1} sampai{' '}
           {Math.min(currentPage * entriesPerPage, totalEntries)} dari {totalEntries} data barang
         </div>
 
-        {/* Pagination */}
         <div className="flex justify-end mt-4">
           {totalPages > 1 && (
             <nav className="inline-flex rounded-md shadow-sm" aria-label="Pagination">
