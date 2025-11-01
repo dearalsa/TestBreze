@@ -58,18 +58,16 @@ class TeacherController extends Controller
         ]);
     }
 
-    // Update data guru
     public function update(Request $request, Teacher $teacher)
     {
-        // FIX: Menambahkan validasi untuk no_hp, alamat, dan is_active
         $validated = $request->validate([
             'nip' => 'required|unique:teachers,nip,' . $teacher->id,
             'nama_lengkap' => 'required',
             'jabatan' => 'required',
-            'no_hp' => 'nullable|string|max:15', // Ditambahkan
+            'no_hp' => 'nullable|string|max:15', 
             'email' => 'required|email|unique:teachers,email,' . $teacher->id,
-            'alamat' => 'nullable|string',      // Ditambahkan
-            'is_active' => 'required|boolean',  // Ditambahkan
+            'alamat' => 'nullable|string',      
+            'is_active' => 'required|boolean',  
         ]);
 
         $teacher->update($validated);
@@ -77,7 +75,6 @@ class TeacherController extends Controller
         return redirect()->route('teachers.index')->with('success', 'Teacher updated successfully.');
     }
 
-    // Hapus guru
     public function destroy(Teacher $teacher)
     {
         $teacher->delete();

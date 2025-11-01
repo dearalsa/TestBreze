@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, usePage } from "@inertiajs/react";
 import { FaChalkboardTeacher, FaBox } from "react-icons/fa";
+import { FaTags } from "react-icons/fa";
 import { motion } from "framer-motion";
 import {
   FaHome,
   FaUserCircle,
-  FaSignOutAlt,
   FaAngleDoubleLeft,
   FaAngleDoubleRight,
   FaFileAlt,
@@ -25,7 +25,6 @@ export default function AuthenticatedLayout({ header, children }) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Tutup dropdown kalau klik di luar
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -38,12 +37,12 @@ export default function AuthenticatedLayout({ header, children }) {
 
   const autoCollapsed = windowWidth < 768;
 
-  // Sidebar menu
   const menuItems = [
     { name: "Dashboard", href: route("dashboard"), icon: <FaHome /> },
     { name: "Data Siswa", href: route("students.index"), icon: <FaFileAlt /> },
     { name: "Data Guru", href: route("teachers.index"), icon: <FaChalkboardTeacher /> },
     { name: "Data Barang", href: route("inventories.index"), icon: <FaBox /> },
+    { name: "Kategori Barang", href: route("categories.index"), icon: <FaTags /> }
   ];
 
   const menuItemVariants = {

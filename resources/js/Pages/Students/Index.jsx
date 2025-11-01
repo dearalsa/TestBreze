@@ -38,7 +38,6 @@ export default function Index() {
     setCurrentPage(1);
   };
 
-  // 🔍 Filter pencarian
   const filteredStudents = students.filter(
     (s) =>
       s.nama_lengkap.toLowerCase().includes(search.toLowerCase()) ||
@@ -47,7 +46,6 @@ export default function Index() {
       s.angkatan.toLowerCase().includes(search.toLowerCase())
   );
 
-  // 🔤 Sorting nama dari A–Z
   const sortedStudents = [...filteredStudents].sort((a, b) =>
     a.nama_lengkap.localeCompare(b.nama_lengkap, 'id', { sensitivity: 'base' })
   );
@@ -57,17 +55,14 @@ export default function Index() {
   const currentStudents = sortedStudents.slice(indexOfFirst, indexOfLast);
   const totalPages = Math.ceil(sortedStudents.length / entries);
 
-  // Chart data
   const total = students.length;
   const jurusanLabels = ['PPLG', 'Animasi', 'BCF', 'TPFL', 'TO'];
   const jurusanCounts = jurusanLabels.map((j) => students.filter((s) => s.jurusan === j).length);
 
   const laki = students.filter((s) => s.jenis_kelamin === 'Laki-laki').length;
   const perempuan = students.filter((s) => s.jenis_kelamin === 'Perempuan').length;
-
-  // Hitung jumlah siswa aktif dan tidak aktif
-  const aktif = students.filter((s) => s.is_active === '1').length;
-  const tidakAktif = students.filter((s) => s.is_active !== '1').length;
+  const aktif = students.filter((s) => s.is_active == 1).length;
+  const tidakAktif = students.filter((s) => s.is_active != 1).length;
 
   const pieData = {
     labels: ['Laki-laki', 'Perempuan'],
@@ -101,7 +96,6 @@ export default function Index() {
     },
   };
 
-  // 🔁 Bar chart diganti dari per jurusan menjadi aktif vs tidak aktif
   const barData = {
     labels: ['Aktif', 'Tidak Aktif'],
     datasets: [
@@ -215,7 +209,7 @@ export default function Index() {
               href={route('students.create')}
               className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl focus:outline-none focus:ring-0"
             >
-              + Tambah Data
+              + Tambah Siswa
             </Link>
           </div>
         </div>
@@ -225,14 +219,15 @@ export default function Index() {
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-100">
               <tr>
-                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 w-10">No</th>
-                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 w-24 whitespace-nowrap">NISN</th>
-                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 whitespace-nowrap">Nama Lengkap</th>
-                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 w-28 whitespace-nowrap">Jurusan</th>
-                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 w-20 whitespace-nowrap">Angkatan</th>
-                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 w-28 whitespace-nowrap">Jenis Kelamin</th>
-                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 w-24 whitespace-nowrap">Status</th>
-                <th className="px-4 py-2 text-center text-sm font-medium text-gray-700 w-40 whitespace-nowrap">Aksi</th>
+                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 **w-10**">No</th>
+                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 **w-24** whitespace-nowrap">NISN</th>
+                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">Nama Lengkap</th>
+                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 **w-28** whitespace-nowrap">Jurusan</th>
+                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 **w-20** whitespace-nowrap">Angkatan</th>
+                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 **w-28** whitespace-nowrap">Jenis Kelamin</th>
+                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 **w-24** whitespace-nowrap">Status</th>
+                {/* Revisi: Hapus w-40 dan text-center */}
+                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 **w-36** whitespace-nowrap">Aksi</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
@@ -246,7 +241,7 @@ export default function Index() {
                     <td className="px-4 py-2 text-sm text-gray-700 whitespace-nowrap">{s.angkatan}</td>
                     <td className="px-4 py-2 text-sm text-gray-700 whitespace-nowrap">{s.jenis_kelamin}</td>
                     <td className="px-4 py-2 whitespace-nowrap">
-                      {s.is_active === '1' ? (
+                      {s.is_active == 1 ? (
                         <span className="inline-block bg-green-200 text-green-800 text-xs font-semibold px-2 py-1 rounded-full">
                           Aktif
                         </span>
@@ -256,25 +251,28 @@ export default function Index() {
                         </span>
                       )}
                     </td>
-                    <td className="px-4 py-2 text-center space-x-1 whitespace-nowrap">
-                      <Link
-                        href={route('students.show', s.id)}
-                        className="bg-blue-500 hover:bg-blue-600 text-white text-xs font-medium py-1 px-2 rounded transition duration-200"
-                      >
-                        Detail
-                      </Link>
-                      <Link
-                        href={route('students.edit', s.id)}
-                        className="bg-yellow-400 hover:bg-yellow-500 text-white text-xs font-medium py-1 px-2 rounded transition duration-200"
-                      >
-                        Edit
-                      </Link>
-                      <button
-                        onClick={() => handleDelete(s.id)}
-                        className="bg-red-500 hover:bg-red-600 text-white text-xs font-medium py-1 px-2 rounded transition duration-200"
-                      >
-                        Hapus
-                      </button>
+                    {/* Revisi: Hapus text-center dan ganti justify-center dengan justify-start/none */}
+                    <td className="px-4 py-2 whitespace-nowrap">
+                      <div className="flex **justify-start** items-center gap-3">
+                        <Link
+                          href={route('students.show', s.id)}
+                          className="text-blue-500 hover:text-blue-600 transition-transform transform hover:scale-110"
+                        >
+                          <i className="fa-solid fa-eye text-lg"></i>
+                        </Link>
+                        <Link
+                          href={route('students.edit', s.id)}
+                          className="text-yellow-500 hover:text-yellow-600 transition-transform transform hover:scale-110"
+                        >
+                          <i className="fa-solid fa-pen-to-square text-lg"></i>
+                        </Link>
+                        <button
+                          onClick={() => handleDelete(s.id)}
+                          className="text-red-500 hover:text-red-600 transition-transform transform hover:scale-110"
+                        >
+                          <i className="fa-solid fa-trash text-lg"></i>
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))

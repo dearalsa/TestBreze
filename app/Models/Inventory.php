@@ -8,11 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Inventory extends Model
 {
     use HasFactory;
-
     protected $fillable = [
         'kode_barang',
         'nama_barang',
-        'kategori',
+        'category_id',
         'jumlah_barang',
         'deskripsi',
         'status',
@@ -20,7 +19,8 @@ class Inventory extends Model
         'is_active',
     ];
 
-    protected $casts = [
-        'is_active' => 'boolean',
-    ];
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
 }
