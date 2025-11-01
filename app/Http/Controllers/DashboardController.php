@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Inertia\Inertia;
-use App\Models\Student; 
+use App\Models\Student;
 use App\Models\Teacher;
 use App\Models\Inventory;
-use Illuminate\Support\Facades\Auth;
-use Spatie\Activitylog\Models\Activity; 
+use App\Models\Category;
+use Spatie\Activitylog\Models\Activity;
+use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
@@ -17,18 +17,19 @@ class DashboardController extends Controller
             'siswa' => Student::count(),
             'guru' => Teacher::count(),
             'barang' => Inventory::count(),
+            'kategori' => Category::count(),
         ];
 
-        $activityLogs = Activity::query()
-            ->where('causer_id', Auth::id())
-            ->where('causer_type', 'App\Models\User') 
+        $activityLogs = Activity::where('causer_id', auth()->id())
             ->latest()
             ->take(5)
-            ->select('id', 'description', 'created_at') 
-            ->get();
-            
+            ->get(['id', 'description', 'created_at']);
+
         return Inertia::render('Dashboard', [
-            'totals' => $totals, 
+            'auth' => [
+                'user' => auth()->user(),
+            ],
+            'totals' => $totals,
             'activityLogs' => $activityLogs,
         ]);
     }

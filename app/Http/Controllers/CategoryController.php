@@ -10,9 +10,9 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::all();
+        $categories = Category::latest()->get();
         return Inertia::render('Category/Index', [
-            'categories' => $categories
+            'categories' => $categories,
         ]);
     }
 
@@ -37,18 +37,16 @@ class CategoryController extends Controller
     public function show($id)
     {
         $category = Category::findOrFail($id);
-
         return Inertia::render('Category/Show', [
-            'category' => $category
+            'category' => $category,
         ]);
     }
 
     public function edit($id)
     {
         $category = Category::findOrFail($id);
-
         return Inertia::render('Category/Edit', [
-            'category' => $category
+            'category' => $category,
         ]);
     }
 
@@ -74,3 +72,4 @@ class CategoryController extends Controller
         return redirect()->route('categories.index')->with('success', 'Kategori berhasil dihapus.');
     }
 }
+    

@@ -1,15 +1,16 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, usePage } from "@inertiajs/react";
-import { FaChalkboardTeacher, FaBox } from "react-icons/fa";
-import { FaTags } from "react-icons/fa";
-import { motion } from "framer-motion";
 import {
   FaHome,
   FaUserCircle,
   FaAngleDoubleLeft,
   FaAngleDoubleRight,
-  FaFileAlt,
+  FaChalkboardTeacher,
+  FaBox,
+  FaTags,
+  FaUserGraduate,
 } from "react-icons/fa";
+import { motion } from "framer-motion";
 import Footer from "@/Components/Footer";
 
 export default function AuthenticatedLayout({ header, children }) {
@@ -39,10 +40,10 @@ export default function AuthenticatedLayout({ header, children }) {
 
   const menuItems = [
     { name: "Dashboard", href: route("dashboard"), icon: <FaHome /> },
-    { name: "Data Siswa", href: route("students.index"), icon: <FaFileAlt /> },
+    { name: "Data Siswa", href: route("students.index"), icon: <FaUserGraduate /> },
     { name: "Data Guru", href: route("teachers.index"), icon: <FaChalkboardTeacher /> },
     { name: "Data Barang", href: route("inventories.index"), icon: <FaBox /> },
-    { name: "Kategori Barang", href: route("categories.index"), icon: <FaTags /> }
+    { name: "Kategori Barang", href: route("categories.index"), icon: <FaTags /> },
   ];
 
   const menuItemVariants = {
@@ -58,13 +59,11 @@ export default function AuthenticatedLayout({ header, children }) {
   return (
     <div className="flex flex-col min-h-screen font-comfortaa bg-white text-gray-900">
       <div className="flex flex-1">
-        {/* Sidebar */}
         <motion.aside
           animate={{ width: collapsed || autoCollapsed ? "4rem" : "16rem" }}
           transition={{ duration: 0.3 }}
           className="bg-[#3b5998] rounded-3xl mx-4 my-4 flex flex-col justify-between p-4 text-white relative shadow-lg"
         >
-          {/* Header Sidebar */}
           <div className="flex items-center mb-6 justify-between">
             {!(collapsed || autoCollapsed) && (
               <span className="text-white font-semibold text-lg">Menu</span>
@@ -77,7 +76,6 @@ export default function AuthenticatedLayout({ header, children }) {
             </button>
           </div>
 
-          {/* Menu List */}
           <nav className="flex-1 flex flex-col gap-3">
             {menuItems.map((item) => (
               <motion.div
@@ -104,7 +102,6 @@ export default function AuthenticatedLayout({ header, children }) {
             ))}
           </nav>
 
-          {/* Info User di Bawah Sidebar */}
           {!collapsed && !autoCollapsed && (
             <motion.div
               className="mt-auto px-3 py-3 rounded-full bg-white/20 text-white text-sm"
@@ -118,13 +115,9 @@ export default function AuthenticatedLayout({ header, children }) {
           )}
         </motion.aside>
 
-        {/* Main Content */}
         <div className="flex-1 flex flex-col">
-          {/* Header bagian atas */}
           <header className="px-6 pt-6 pb-2 bg-white flex justify-between items-center">
             {header && <div>{header}</div>}
-
-            {/* Profil di kanan atas */}
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
