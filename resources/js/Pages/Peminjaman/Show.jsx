@@ -1,6 +1,14 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
 import { FaArrowLeft } from 'react-icons/fa';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+import 'dayjs/locale/id';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.locale('id');
 
 export default function ShowPeminjaman({ peminjaman }) {
   if (!peminjaman) {
@@ -23,6 +31,12 @@ export default function ShowPeminjaman({ peminjaman }) {
     );
   }
 
+  // Format tanggal agar sesuai WIB
+  const formatDate = (date) => {
+    if (!date) return '-';
+    return dayjs.utc(date).tz('Asia/Jakarta').format('DD MMMM YYYY, HH:mm [WIB]');
+  };
+
   return (
     <AuthenticatedLayout>
       <Head title={`Detail Peminjaman - ${peminjaman.peminjam_id ?? '-'}`} />
@@ -44,8 +58,8 @@ export default function ShowPeminjaman({ peminjaman }) {
             <InfoRow label="ID Peminjam" value={peminjaman.peminjam_id ?? '-'} />
             <InfoRow label="Role" value={peminjaman.role ?? '-'} />
             <InfoRow label="Barang yang Dipinjam" value={peminjaman.barang_id ?? '-'} />
-            <InfoRow label="Tanggal Pinjam" value={peminjaman.tanggal_peminjam ?? '-'} />
-            <InfoRow label="Tanggal Kembali" value={peminjaman.tanggal_kembali ?? '-'} />
+            <InfoRow label="Tanggal Pinjam" value={formatDate(peminjaman.tanggal_peminjam)} />
+            <InfoRow label="Tanggal Kembali" value={formatDate(peminjaman.tanggal_kembali)} />
             <InfoRow label="Keterangan" value={peminjaman.keterangan ?? '-'} />
             <InfoRow label="Added By" value={peminjaman.added_by ?? '-'} />
           </div>

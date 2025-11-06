@@ -57,23 +57,34 @@ export default function CreatePeminjaman() {
     const handleCheckPeminjamId = async () => {
         if (!data.role) return showNotification('Pilih jenis peminjam terlebih dahulu.', 'warning');
         if (!data.peminjam_id) return showNotification('Masukkan ID Peminjam terlebih dahulu.', 'warning');
+        
         try {
-            const res = await axios.get(route('peminjaman.checkPeminjam', { role: data.role, id: data.peminjam_id }));
+            // FIX: Mengirim data sebagai path parameters ke helper route()
+            const res = await axios.get(route('peminjaman.checkPeminjam', { 
+                role: data.role, 
+                id: data.peminjam_id 
+            }));
+
             if (res.data.status) showNotification(`${res.data.message}: ${res.data.data.nama_lengkap}`, 'success');
             else showNotification(res.data.message, 'warning');
-        } catch {
-            showNotification('Terjadi kesalahan saat memeriksa ID.', 'warning');
+        } catch (error) {
+            showNotification('Terjadi kesalahan saat memeriksa ID. Pastikan ID dan Role benar.', 'warning');
         }
     };
 
     const handleCheckBarangId = async () => {
         if (!data.barang_id) return showNotification('Masukkan ID Barang terlebih dahulu.', 'warning');
+        
         try {
-            const res = await axios.get(route('peminjaman.checkBarang', { id: data.barang_id }));
+            // FIX: Mengirim data sebagai path parameter ke helper route()
+            const res = await axios.get(route('peminjaman.checkBarang', { 
+                id: data.barang_id 
+            }));
+            
             if (res.data.status) showNotification(`${res.data.message}: ${res.data.data.nama_barang}`, 'success');
             else showNotification(res.data.message, 'warning');
-        } catch {
-            showNotification('Terjadi kesalahan saat memeriksa Barang.', 'warning');
+        } catch (error) {
+            showNotification('Terjadi kesalahan saat memeriksa Barang. Pastikan Kode Barang benar.', 'warning');
         }
     };
 
