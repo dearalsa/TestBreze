@@ -9,6 +9,7 @@ import {
   FaBox,
   FaTags,
   FaUserGraduate,
+  FaClipboardList,
 } from "react-icons/fa";
 import { motion } from "framer-motion";
 import Footer from "@/Components/Footer";
@@ -44,6 +45,7 @@ export default function AuthenticatedLayout({ header, children }) {
     { name: "Data Guru", href: route("teachers.index"), icon: <FaChalkboardTeacher /> },
     { name: "Data Barang", href: route("inventories.index"), icon: <FaBox /> },
     { name: "Kategori Barang", href: route("categories.index"), icon: <FaTags /> },
+    { name: "Peminjaman", href: route("peminjaman.index"), icon: <FaClipboardList /> },
   ];
 
   const menuItemVariants = {
@@ -57,7 +59,7 @@ export default function AuthenticatedLayout({ header, children }) {
   };
 
   return (
-    <div className="flex flex-col min-h-screen font-comfortaa bg-white text-gray-900">
+    <div className="flex flex-col min-h-screen font-plusregular bg-white text-gray-900">
       <div className="flex flex-1">
         <motion.aside
           animate={{ width: collapsed || autoCollapsed ? "4rem" : "16rem" }}
@@ -66,7 +68,7 @@ export default function AuthenticatedLayout({ header, children }) {
         >
           <div className="flex items-center mb-6 justify-between">
             {!(collapsed || autoCollapsed) && (
-              <span className="text-white font-semibold text-lg">Menu</span>
+              <span className="text-white font-plusmedium text-lg pl-4">Menu</span>
             )}
             <button
               onClick={() => setCollapsed(!collapsed)}
@@ -109,7 +111,7 @@ export default function AuthenticatedLayout({ header, children }) {
               initial="hidden"
               animate="show"
             >
-              <div className="font-semibold truncate">{user.name}</div>
+              <div className="font-plusmedium truncate">{user.name}</div>
               <div className="text-xs truncate">{user.email}</div>
             </motion.div>
           )}

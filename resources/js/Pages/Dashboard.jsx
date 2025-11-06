@@ -57,7 +57,7 @@ export default function Dashboard() {
     <AuthenticatedLayout
       header={
         <div>
-          <h2 className="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>
+          <h2 className="font-plusmedium text-xl text-gray-800 leading-tight">Dashboard</h2>
           <p className="text-sm text-gray-500">{today}</p>
         </div>
       }
@@ -72,7 +72,7 @@ export default function Dashboard() {
           transition={{ duration: 0.5 }}
         >
           <div className="flex-1">
-            <h1 className="text-3xl font-extrabold text-white mb-2">
+            <h1 className="text-3xl font-plusmedium text-white mb-2">
               Hai {user.name}!
             </h1>
             <p className="text-white">
@@ -103,7 +103,7 @@ export default function Dashboard() {
           />
         </motion.div>
 
-        <h3 className="text-2xl font-bold text-gray-800 mt-8 mb-4">
+        <h3 className="text-2xl font-plusmedium text-gray-800 mt-8 mb-4">
           Statistik Total Data
         </h3>
 
@@ -125,7 +125,7 @@ export default function Dashboard() {
               >
                 <IconComponent className="text-4xl" style={{ color: stat.color }} />
                 <div>
-                  <p className="text-sm font-medium text-gray-500 uppercase">
+                  <p className="text-sm font-plusmedium text-gray-500 uppercase">
                     {stat.title}
                   </p>
                   <p
@@ -140,7 +140,7 @@ export default function Dashboard() {
           })}
         </motion.div>
 
-        <h3 className="text-2xl font-bold text-gray-800 mt-8 mb-4">
+        <h3 className="text-2xl font-plusmedium text-gray-800 mt-8 mb-4">
           Aktivitas Saya 
         </h3>
 
@@ -160,14 +160,14 @@ export default function Dashboard() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: 0.6 + index * 0.05 }}
                 >
-                  <p className="text-gray-800 font-medium">{log.description}</p>
+                  <p className="text-gray-800 font-plusregular">{log.description}</p>
                   <p className="text-xs text-gray-500 mt-1 flex justify-between">
                     <span>
                       {dayjs(log.created_at)
                         .locale('id')
                         .format('dddd, DD MMMM YYYY, HH:mm')}
                     </span>
-                    <span className="text-indigo-500 font-semibold">
+                    <span className="text-indigo-500 font-plusmedium">
                       {dayjs(log.created_at).locale('id').fromNow()}
                     </span>
                   </p>

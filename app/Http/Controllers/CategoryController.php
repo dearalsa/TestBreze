@@ -34,14 +34,6 @@ class CategoryController extends Controller
         return redirect()->route('categories.index')->with('success', 'Kategori berhasil ditambahkan.');
     }
 
-    public function show($id)
-    {
-        $category = Category::findOrFail($id);
-        return Inertia::render('Category/Show', [
-            'category' => $category,
-        ]);
-    }
-
     public function edit($id)
     {
         $category = Category::findOrFail($id);
@@ -72,4 +64,3 @@ class CategoryController extends Controller
         return redirect()->route('categories.index')->with('success', 'Kategori berhasil dihapus.');
     }
 }
-    

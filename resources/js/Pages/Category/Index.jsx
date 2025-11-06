@@ -34,31 +34,79 @@ export default function Index() {
     startIndex + entriesPerPage
   );
 
+  const goToPage = (page) => {
+    if (page >= 1 && page <= totalPages) setCurrentPage(page);
+  };
+
+  const renderPaginationButtons = () => {
+    const maxButtons = 5;
+    const buttons = [];
+    let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
+    let endPage = Math.min(totalPages, startPage + maxButtons - 1);
+    if (totalPages > maxButtons && endPage === totalPages) startPage = Math.max(1, totalPages - maxButtons + 1);
+
+    buttons.push(
+      <button
+        key="prev"
+        onClick={() => goToPage(currentPage - 1)}
+        disabled={currentPage === 1}
+        className={`px-3 py-2 border border-gray-300 bg-white text-sm font-plusmedium text-gray-600 hover:bg-gray-50 rounded-l-xl transition ${
+          currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''
+        }`}
+      >
+        &lt;
+      </button>
+    );
+
+    for (let i = startPage; i <= endPage; i++) {
+      buttons.push(
+        <button
+          key={i}
+          onClick={() => goToPage(i)}
+          className={`px-3 py-2 border-t border-b border-gray-300 text-sm font-plusmedium transition ${
+            currentPage === i
+              ? 'bg-blue-600 border-blue-600 text-white'
+              : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
+          }`}
+        >
+          {i}
+        </button>
+      );
+    }
+
+    buttons.push(
+      <button
+        key="next"
+        onClick={() => goToPage(currentPage + 1)}
+        disabled={currentPage === totalPages}
+        className={`px-3 py-2 border border-gray-300 bg-white text-sm font-plusmedium text-gray-600 hover:bg-gray-50 rounded-r-xl transition ${
+          currentPage === totalPages ? 'cursor-not-allowed opacity-50' : ''
+        }`}
+      >
+        &gt;
+      </button>
+    );
+
+    return buttons;
+  };
+
   return (
     <AuthenticatedLayout>
       <Head title="Daftar Kategori" />
+      <div className="max-w-full overflow-hidden py-4 px-3 sm:px-6 font-plusmedium">
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 gap-4">
+          <h1 className="text-3xl font-plusmedium text-gray-800 text-center lg:text-left w-full lg:w-auto">
+            Daftar Kategori
+          </h1>
 
-      <div className="max-w-6xl mx-auto p-6">
-        {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-3">
-          <h2 className="text-3xl font-bold text-gray-800">Daftar Kategori</h2>
-          <div className="flex flex-wrap items-center gap-3">
-            {/* Entries per page */}
-            <div className="flex items-center gap-2">
-              <label
-                htmlFor="entries"
-                className="text-gray-600 text-sm md:text-base whitespace-nowrap"
-              >
-                Tampilkan:
-              </label>
+          <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 w-full lg:w-auto">
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+              <label htmlFor="entries" className="text-gray-600 text-sm md:text-base whitespace-nowrap font-plusregular">Tampilkan:</label>
               <select
                 id="entries"
                 value={entriesPerPage}
-                onChange={(e) => {
-                  setEntriesPerPage(Number(e.target.value));
-                  setCurrentPage(1);
-                }}
-                className="py-2 border border-gray-500 rounded-xl focus:ring-transparent focus:border-gray-500 text-sm"
+                onChange={(e) => { setEntriesPerPage(Number(e.target.value)); setCurrentPage(1); }}
+                className="py-2 px-3 border border-gray-300 rounded-xl focus:ring-transparent focus:border-gray-400 text-sm w-full sm:w-auto font-plusregular"
               >
                 <option value={5}>5</option>
                 <option value={10}>10</option>
@@ -68,100 +116,81 @@ export default function Index() {
               </select>
             </div>
 
-            {/* Search bar */}
-            <div className="relative w-64">
-              <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <div className="relative w-full sm:w-64">
+              <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
               <input
                 type="text"
                 placeholder="Cari kategori..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 pr-4 py-2 border border-gray-400 rounded-lg focus:ring-transparent focus:border-gray-600 text-sm w-56 md:w-64"
+                onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1); }}
+                className="pl-10 pr-4 py-2 border border-gray-300 rounded-xl focus:ring-transparent focus:border-gray-400 w-full font-plusregular"
               />
             </div>
 
-            {/* Tambah kategori */}
             <Link
               href={route('categories.create')}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl flex items-center gap-2"
+              className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl whitespace-nowrap w-full sm:w-auto text-center font-plusmedium"
             >
               <FaPlus /> Tambah Kategori
             </Link>
           </div>
         </div>
 
-        {/* Table */}
-        <div className="bg-white shadow-md rounded-2xl p-4">
-          <table className="w-full text-left">
-            <thead>
-              <tr className="border-b">
-                <th className="p-3 w-16">No</th>
-                <th className="p-3">Nama Kategori</th>
-                <th className="p-3 text-right w-32">Aksi</th>
+        <div className="bg-white shadow-lg rounded-2xl w-full overflow-hidden">
+          <div className="w-full overflow-x-auto">
+            <table className="w-full border-collapse text-xs sm:text-sm md:text-base">
+              <thead className="bg-gray-100">
+              <tr>
+                <th className="px-3 py-3 w-[5%] text-center font-normal text-gray-700">No</th>
+                <th className="px-3 py-3 w-[85%] text-left font-normal text-gray-700">Nama Kategori</th>
+                <th className="px-3 py-3 w-[10%] text-center font-normal text-gray-700">Aksi</th>
               </tr>
             </thead>
-            <tbody>
-              {displayedCategories.length > 0 ? (
-                displayedCategories.map((category, index) => (
-                  <tr key={category.id} className="border-b hover:bg-gray-50 transition">
-                    <td className="p-3">{startIndex + index + 1}</td>
-                    <td className="p-3">{category.category_name}</td>
-                    <td className="p-3 text-right">
-                      <div className="flex justify-end gap-3">
-                        <Link
-                          href={route('categories.edit', category.id)}
-                          className="text-yellow-500 hover:text-yellow-600 transition-transform transform hover:scale-110"
-                        >
-                          <FaPen className="text-lg" />
-                        </Link>
-                        <button
-                          onClick={() => handleDelete(category.id)}
-                          className="text-red-500 hover:text-red-600 transition-transform transform hover:scale-110"
-                        >
-                          <FaTrash className="text-lg" />
-                        </button>
-                      </div>
-                    </td>
+              <tbody className="divide-y divide-gray-200 font-plusregular">
+                {displayedCategories.length > 0 ? (
+                  displayedCategories.map((category, index) => (
+                    <tr key={category.id} className="hover:bg-gray-50">
+                      <td className="px-3 py-2 text-center">{startIndex + index + 1}</td>
+                      <td className="px-3 py-2">{category.category_name}</td>
+                      <td className="px-3 py-2 text-center">
+                        <div className="flex justify-center items-center gap-3">
+                          <Link
+                            href={route('categories.edit', category.id)}
+                            className="text-yellow-500 hover:text-yellow-600 transition-transform transform hover:scale-110"
+                          >
+                            <FaPen className="text-base sm:text-lg" />
+                          </Link>
+                          <button
+                            onClick={() => handleDelete(category.id)}
+                            className="text-red-500 hover:text-red-600 transition-transform transform hover:scale-110"
+                          >
+                            <FaTrash className="text-base sm:text-lg" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="3" className="text-center p-6 text-gray-500 font-plusregular">Tidak ada kategori</td>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="3" className="p-3 text-center text-gray-500">
-                    {searchTerm
-                      ? `Tidak ditemukan kategori untuk "${searchTerm}"`
-                      : 'Tidak ada kategori ditemukan.'}
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <div className="flex justify-between items-center mt-4 text-sm text-gray-600">
-              <p>
-                Menampilkan {startIndex + 1} -{' '}
-                {Math.min(startIndex + entriesPerPage, totalEntries)} dari {totalEntries} entri
-              </p>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-                  disabled={currentPage === 1}
-                  className="px-3 py-1 border rounded-xl disabled:opacity-50"
-                >
-                  Sebelumnya
-                </button>
-                <button
-                  onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
-                  disabled={currentPage === totalPages}
-                  className="px-3 py-1 border rounded-xl disabled:opacity-50"
-                >
-                  Selanjutnya
-                </button>
-              </div>
-            </div>
-          )}
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
+
+        <div className="mt-4 text-xs sm:text-sm text-gray-600 text-center md:text-left font-plusregular">
+          Menampilkan {totalEntries === 0 ? 0 : startIndex + 1} sampai {Math.min(currentPage * entriesPerPage, totalEntries)} dari {totalEntries} kategori
+        </div>
+
+        {totalPages > 1 && (
+          <div className="mt-2 flex justify-center md:justify-end">
+            <nav className="inline-flex flex-wrap rounded-xl shadow-sm border border-gray-300 divide-x divide-gray-300" aria-label="Pagination">
+              {renderPaginationButtons()}
+            </nav>
+          </div>
+        )}
       </div>
     </AuthenticatedLayout>
   );

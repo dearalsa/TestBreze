@@ -14,7 +14,8 @@ export default {
         extend: {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
-                comfortaa: ['Comfortaa', 'sans-serif'],
+                plusmedium: ['Plusmedium', 'sans-serif'],
+                plusregular: ['Plusregular', 'sans-serif'],
             },
         },
     },

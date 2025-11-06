@@ -49,18 +49,19 @@ export default function Edit() {
     } else setFormattedTanggal('');
   }, [data.tanggal_lahir]);
 
-  const inputClass = 'w-full border border-gray-300 rounded-xl p-3 bg-gray-50 focus:outline-none';
-  const fileClass = 'w-full border border-gray-300 rounded-xl p-2.5 bg-gray-50 focus:outline-none';
+  const inputClass = 'w-full border border-gray-300 rounded-xl p-3 bg-gray-50 focus:outline-none font-plusregular';
+  const fileClass = 'w-full border border-gray-300 rounded-xl p-2.5 bg-gray-50 focus:outline-none font-plusregular';
+  const headingClass = 'font-plusmedium';
 
   return (
     <AuthenticatedLayout>
       <Head title={`Edit Data - ${student.nama_lengkap}`} />
-      <div className="w-full max-w-4xl mx-auto p-6 font-comfortaa">
+      <div className="w-full max-w-4xl mx-auto p-6 font-plusregular">
         <Link href={route('students.index')} className="flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-6">
           <FaArrowLeft /> Kembali ke Daftar Siswa
         </Link>
 
-        <h2 className="text-3xl font-bold text-gray-800 mb-8">Edit Data Siswa</h2>
+        <h2 className={`text-3xl ${headingClass} text-gray-800 mb-8`}>Edit Data Siswa</h2>
         <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-2xl p-6 space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
@@ -151,8 +152,8 @@ export default function Edit() {
           </div>
 
           <div className="flex justify-end pt-4">
-            <button type="submit" disabled={processing} className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-8 rounded-xl transition duration-150 ease-in-out">
-              {processing ? 'Menyimpan...' : 'Update Data'}
+            <button type="submit" disabled={processing} className="bg-blue-600 hover:bg-blue-700 text-white font-plusmedium py-2.5 px-8 rounded-xl transition duration-150 ease-in-out">
+              {processing ? 'Menyimpan...' : 'Perbarui Data'}
             </button>
           </div>
 

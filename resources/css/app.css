@@ -3,8 +3,22 @@
 @tailwind utilities;
 
 @font-face {
-    font-family: "Comfortaa";
-    src: url("/fonts/Comfortaa-Regular.ttf") format("truetype");
+    font-family: "Plusmedium";
+    src: url("/fonts/PlusJakartaSans-Medium.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Plusregular";
+    src: url("/fonts/PlusJakartaSans-Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Plusbold";
+    src: url("/fonts/PlusJakartaSans-Bold.ttf") format("truetype");
     font-weight: normal;
     font-style: normal;
 }

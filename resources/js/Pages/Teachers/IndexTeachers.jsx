@@ -40,9 +40,9 @@ export default function Index() {
     <AuthenticatedLayout>
       <Head title="Daftar Guru" />
 
-      <div className="max-w-full overflow-hidden py-4 px-3 sm:px-4 font-comfortaa">
+      <div className="max-w-full overflow-hidden py-4 px-3 sm:px-4 font-pluregular">
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 gap-4">
-          <h1 className="text-2xl font-bold text-gray-800 text-center lg:text-left w-full lg:w-auto">
+          <h1 className="text-3xl font-plusmedium text-gray-800 text-center lg:text-left w-full lg:w-auto">
             Daftar Data Guru
           </h1>
 
@@ -81,7 +81,7 @@ export default function Index() {
 
             <Link
               href={route('teachers.create')}
-              className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl whitespace-nowrap w-full sm:w-auto text-center"
+              className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl whitespace-nowrap w-full sm:w-auto text-center font-medium"
             >
               <FaPlus /> Tambah Guru
             </Link>
@@ -89,57 +89,57 @@ export default function Index() {
         </div>
 
         <div className="bg-white shadow-md rounded-2xl p-4 mb-6 w-full">
-          <h2 className="text-lg font-semibold text-gray-800 mb-3 text-center md:text-left">
+          <h2 className="text-lg font-plusmedium text-gray-800 mb-3 text-center md:text-left">
             Statistik Guru
           </h2>
           <div className="w-full h-52 sm:h-72 md:h-80">
-           <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-              <Pie
-                data={chartData}
-                dataKey="value"
-                nameKey="name"
-                cx="50%"
-                cy="50%"
-                innerRadius="50%"
-                outerRadius="80%"
-                paddingAngle={0}
-                label={false} 
-                stroke="none" 
-              >
-                {chartData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index]} />
-                ))}
-              </Pie>
-              <Tooltip
-                formatter={(value) => [value, 'Jumlah']}
-                contentStyle={{
-                  borderRadius: '8px',
-                  border: 'none',
-                  boxShadow: '0 0 10px rgba(0,0,0,0.1)',
-                }}
-              />
-              <Legend
-                verticalAlign="bottom"
-                height={36}
-                wrapperStyle={{ fontSize: '14px' }}
-              />
-            </PieChart>
-          </ResponsiveContainer>
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={chartData}
+                  dataKey="value"
+                  nameKey="name"
+                  cx="50%"
+                  cy="50%"
+                  innerRadius="50%"
+                  outerRadius="80%"
+                  paddingAngle={0}
+                  label={false}
+                  stroke="none"
+                >
+                  {chartData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index]} />
+                  ))}
+                </Pie>
+                <Tooltip
+                  formatter={(value) => [value, 'Jumlah']}
+                  contentStyle={{
+                    borderRadius: '8px',
+                    border: 'none',
+                    boxShadow: '0 0 10px rgba(0,0,0,0.1)',
+                  }}
+                />
+                <Legend
+                  verticalAlign="bottom"
+                  height={36}
+                  wrapperStyle={{ fontSize: '14px' }}
+                />
+              </PieChart>
+            </ResponsiveContainer>
           </div>
         </div>
 
         <div className="bg-white shadow-lg rounded-2xl w-full overflow-hidden">
           <div className="w-full overflow-x-auto">
             <table className="w-full border-collapse text-xs sm:text-sm md:text-base">
-              <thead className="bg-gray-100">
+              <thead className="bg-gray-100 font-plusmedium">
                 <tr>
-                  <th className="px-2 sm:px-4 py-3 text-left font-semibold text-gray-700">No</th>
-                  <th className="px-2 sm:px-4 py-3 text-left font-semibold text-gray-700">Nama</th>
-                  <th className="px-2 sm:px-4 py-3 text-left font-semibold text-gray-700">NIP</th>
-                  <th className="px-2 sm:px-4 py-3 text-left font-semibold text-gray-700">Email</th>
-                  <th className="px-2 sm:px-4 py-3 text-left font-semibold text-gray-700">Status</th>
-                  <th className="px-2 sm:px-4 py-3 text-left font-semibold text-gray-700">Aksi</th>
+                  <th className="px-3 py-3 w-[5%] text-center font-medium text-gray-700">No</th>
+                  <th className="px-3 py-3 w-[25%] text-left font-medium text-gray-700">Nama</th>
+                  <th className="px-3 py-3 w-[15%] text-left font-medium text-gray-700">NIP</th>
+                  <th className="px-3 py-3 w-[30%] text-left font-medium text-gray-700">Email</th>
+                  <th className="px-3 py-3 w-[15%] text-center font-medium text-gray-700">Status</th>
+                  <th className="px-3 py-3 w-[10%] text-center font-medium text-gray-700">Aksi</th>
                 </tr>
               </thead>
 
@@ -147,13 +147,13 @@ export default function Index() {
                 {displayedTeachers.length > 0 ? (
                   displayedTeachers.map((teacher, index) => (
                     <tr key={teacher.id} className="hover:bg-gray-50">
-                      <td className="px-2 sm:px-4 py-3 text-center">{index + 1}</td>
-                      <td className="px-2 sm:px-4 py-3 break-words">{teacher.nama_lengkap}</td>
-                      <td className="px-2 sm:px-4 py-3 break-words">{teacher.nip}</td>
-                      <td className="px-2 sm:px-4 py-3 break-all">{teacher.email}</td>
-                      <td className="px-2 sm:px-4 py-3 text-center">
+                      <td className="px-3 py-3 text-center">{index + 1}</td>
+                      <td className="px-3 py-3 break-words">{teacher.nama_lengkap}</td>
+                      <td className="px-3 py-3 break-words">{teacher.nip}</td>
+                      <td className="px-3 py-3 break-all">{teacher.email}</td>
+                      <td className="px-3 py-3 text-center">
                         <span
-                          className={`px-2 py-1 rounded-full text-[10px] sm:text-xs md:text-sm font-semibold ${
+                          className={`px-3 py-1 rounded-full text-[10px] sm:text-xs font-medium ${
                             teacher.is_active
                               ? 'bg-green-200 text-green-800'
                               : 'bg-red-200 text-red-800'
@@ -162,8 +162,8 @@ export default function Index() {
                           {teacher.is_active ? 'Aktif' : 'Tidak Aktif'}
                         </span>
                       </td>
-                      <td className="px-2 sm:px-4 py-3">
-                        <div className="flex justify-center sm:justify-start items-center gap-3">
+                      <td className="px-3 py-3">
+                        <div className="flex justify-center items-center gap-3">
                           <Link
                             href={route('teachers.show', teacher.id)}
                             className="text-blue-500 hover:text-blue-600 transition-transform transform hover:scale-110"
@@ -194,7 +194,7 @@ export default function Index() {
                   </tr>
                 )}
               </tbody>
-            </table>
+            </table >
           </div>
         </div>
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController; 
+use App\Http\Controllers\PeminjamanController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -28,8 +29,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('teachers', TeacherController::class);
     Route::resource('inventories', InventoryController::class);
     Route::resource('categories', CategoryController::class);
+    Route::resource('peminjaman', PeminjamanController::class);
 
-    // Profile
+    Route::get('/peminjaman/checkPeminjam/{role}/{id}', [PeminjamanController::class, 'checkPeminjam'])->name('peminjaman.checkPeminjam');
+    Route::get('/peminjaman/checkBarang/{id}', [PeminjamanController::class, 'checkBarang'])->name('peminjaman.checkBarang');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

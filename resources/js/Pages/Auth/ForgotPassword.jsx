@@ -8,7 +8,7 @@ export default function ForgotPassword() {
 
   const submit = (e) => {
     e.preventDefault();
-    post(route("password.email")); // route default breeze untuk kirim email reset
+    post(route("password.email")); 
   };
 
   return (
@@ -19,19 +19,19 @@ export default function ForgotPassword() {
         transition={{ duration: 0.8 }}
         className="w-full max-w-md bg-white/40 backdrop-blur-xl p-6 sm:p-8 rounded-2xl shadow-2xl"
       >
-        <h2 className="text-2xl sm:text-3xl font-black font-comfortaa text-[#1a2c38] text-center">
+        <h2 className="text-2xl sm:text-3xl font-black font-plusregular text-[#1a2c38] text-center">
           Forgot Password
         </h2>
 
         <form onSubmit={submit} className="mt-8 space-y-6">
           <div>
-            <label className="block text-sm text-gray-700 font-comfortaa">Email</label>
+            <label className="block text-sm text-gray-700 font-plusregular">Email</label>
             <input
               type="email"
               value={data.email}
               onChange={(e) => setData("email", e.target.value)}
               placeholder="Enter your email"
-              className="mt-2 block w-full appearance-none border-0 border-b-2 border-[#3b5998]/40 bg-transparent text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-0 focus:border-[#3b5998] transition font-comfortaa text-sm sm:text-base"
+              className="mt-2 block w-full appearance-none border-0 border-b-2 border-[#3b5998]/40 bg-transparent text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-0 focus:border-[#3b5998] transition font-plusregular text-sm sm:text-base"
             />
             {errors.email && <div className="text-red-500 text-xs">{errors.email}</div>}
           </div>
@@ -39,13 +39,13 @@ export default function ForgotPassword() {
           <button
             type="submit"
             disabled={processing}
-            className="w-full py-3 mt-4 rounded-lg font-comfortaa text-white bg-[#3b5998] hover:bg-[#2d4373] transition text-sm sm:text-base"
+            className="w-full py-3 mt-4 rounded-lg font-plusmedium text-white bg-[#3b5998] hover:bg-[#2d4373] transition text-sm sm:text-base"
           >
             Send Reset Link
           </button>
         </form>
 
-        <p className="mt-6 text-center text-sm text-gray-600 font-comfortaa">
+        <p className="mt-6 text-center text-sm text-gray-600 font-plusmedium">
           Remember your password?{" "}
           <Link href={route("login")} className="text-[#3b5998] hover:underline">
             Back to Login

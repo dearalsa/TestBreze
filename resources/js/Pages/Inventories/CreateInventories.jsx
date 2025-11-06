@@ -19,7 +19,6 @@ export default function CreateInventories() {
 
   const [barcodeInput, setBarcodeInput] = useState('');
 
-  // Barcode scanner input listener (deteksi input cepat dari scanner)
   useEffect(() => {
     let buffer = '';
     let timer;
@@ -53,7 +52,7 @@ export default function CreateInventories() {
   };
 
   const inputClass =
-    'w-full border border-gray-300 rounded-xl p-3 bg-gray-50 text-base focus:outline-none focus:ring-0 focus:border-gray-300';
+    'w-full border border-gray-300 rounded-xl p-3 bg-gray-50 text-base font-plusregular focus:outline-none focus:ring-0 focus:border-gray-300';
 
   return (
     <AuthenticatedLayout>
@@ -61,12 +60,12 @@ export default function CreateInventories() {
       <div className="max-w-4xl mx-auto p-6">
         <Link
           href={route('inventories.index')}
-          className="flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-6"
+          className="flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-6 font-plusmedium"
         >
           <FaArrowLeft /> Kembali ke Daftar Barang
         </Link>
 
-        <h2 className="text-3xl font-bold text-gray-800 mb-6">
+        <h2 className="text-3xl font-plusmedium text-gray-800 mb-6">
           Tambah Barang Baru
         </h2>
 
@@ -76,7 +75,7 @@ export default function CreateInventories() {
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-gray-700 font-semibold mb-1">
+              <label className="block text-gray-700 font-plusmedium mb-1">
                 Kode Barang
               </label>
               <input
@@ -87,19 +86,19 @@ export default function CreateInventories() {
                 className={inputClass}
               />
               {errors.kode_barang && (
-                <p className="text-red-500 text-sm mt-1">
+                <p className="text-red-500 text-sm mt-1 font-plusregular">
                   {errors.kode_barang}
                 </p>
               )}
               {barcodeInput && (
-                <p className="text-green-600 text-sm mt-1">
+                <p className="text-green-600 text-sm mt-1 font-plusregular">
                   Barcode terdeteksi: {barcodeInput}
                 </p>
               )}
             </div>
 
             <div>
-              <label className="block text-gray-700 font-semibold mb-1">
+              <label className="block text-gray-700 font-plusmedium mb-1">
                 Nama Barang
               </label>
               <input
@@ -110,7 +109,7 @@ export default function CreateInventories() {
                 className={inputClass}
               />
               {errors.nama_barang && (
-                <p className="text-red-500 text-sm mt-1">
+                <p className="text-red-500 text-sm mt-1 font-plusregular">
                   {errors.nama_barang}
                 </p>
               )}
@@ -118,7 +117,7 @@ export default function CreateInventories() {
           </div>
 
           <div>
-            <label className="block text-gray-700 font-semibold mb-1">
+            <label className="block text-gray-700 font-plusmedium mb-1">
               Kategori Barang
             </label>
             <select
@@ -134,14 +133,14 @@ export default function CreateInventories() {
               ))}
             </select>
             {errors.category_id && (
-              <p className="text-red-500 text-sm mt-1">
+              <p className="text-red-500 text-sm mt-1 font-plusregular">
                 {errors.category_id}
               </p>
             )}
           </div>
 
           <div>
-            <label className="block text-gray-700 font-semibold mb-1">
+            <label className="block text-gray-700 font-plusmedium mb-1">
               Jumlah Barang
             </label>
             <input
@@ -153,14 +152,14 @@ export default function CreateInventories() {
               min="1"
             />
             {errors.jumlah_barang && (
-              <p className="text-red-500 text-sm mt-1">
+              <p className="text-red-500 text-sm mt-1 font-plusregular">
                 {errors.jumlah_barang}
               </p>
             )}
           </div>
 
           <div>
-            <label className="block text-gray-700 font-semibold mb-1">
+            <label className="block text-gray-700 font-plusmedium mb-1">
               Deskripsi
             </label>
             <textarea
@@ -171,14 +170,14 @@ export default function CreateInventories() {
               rows={3}
             ></textarea>
             {errors.deskripsi && (
-              <p className="text-red-500 text-sm mt-1">
+              <p className="text-red-500 text-sm mt-1 font-plusregular">
                 {errors.deskripsi}
               </p>
             )}
           </div>
 
           <div>
-            <label className="block text-gray-700 font-semibold mb-1">
+            <label className="block text-gray-700 font-plusmedium mb-1">
               Status Barang
             </label>
             <select
@@ -193,12 +192,14 @@ export default function CreateInventories() {
               <option value="Rusak">Rusak</option>
             </select>
             {errors.status && (
-              <p className="text-red-500 text-sm mt-1">{errors.status}</p>
+              <p className="text-red-500 text-sm mt-1 font-plusregular">
+                {errors.status}
+              </p>
             )}
           </div>
 
           <div>
-            <label className="block text-gray-700 font-semibold mb-1">
+            <label className="block text-gray-700 font-plusmedium mb-1">
               Lokasi Barang
             </label>
             <input
@@ -209,14 +210,14 @@ export default function CreateInventories() {
               className={inputClass}
             />
             {errors.lokasi_barang && (
-              <p className="text-red-500 text-sm mt-1">
+              <p className="text-red-500 text-sm mt-1 font-plusregular">
                 {errors.lokasi_barang}
               </p>
             )}
           </div>
 
           <div>
-            <label className="block mb-1 font-semibold text-gray-700">
+            <label className="block mb-1 font-plusmedium text-gray-700">
               Status Aktif/Tidak Aktif
             </label>
             <select
@@ -234,7 +235,7 @@ export default function CreateInventories() {
             <button
               type="submit"
               disabled={processing}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-xl disabled:opacity-50"
+              className="bg-blue-600 hover:bg-blue-700 text-white font-plusmedium py-2 px-6 rounded-xl disabled:opacity-50"
             >
               {processing ? 'Menyimpan...' : 'Simpan'}
             </button>

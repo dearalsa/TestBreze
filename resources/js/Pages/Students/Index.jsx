@@ -78,20 +78,21 @@ export default function Index() {
     const pieOptions = {
         responsive: true,
         maintainAspectRatio: false,
+        devicePixelRatio: window.devicePixelRatio,
         plugins: {
             legend: {
                 position: 'bottom',
-                labels: { color: '#374151', font: { family: 'Comfortaa', size: 14, weight: '500' } },
+                labels: { color: '#374151', font: { family: 'plusmedium', size: 14, weight: '500' } },
             },
             title: {
                 display: true,
                 text: 'Distribusi Jenis Kelamin',
                 color: '#1f2937',
-                font: { family: 'Comfortaa', size: 16, weight: '600' },
+                font: { family: 'plusregular', size: 16, weight: '500' },
             },
             tooltip: {
-                bodyFont: { family: 'Comfortaa', size: 14 },
-                titleFont: { family: 'Comfortaa', size: 14, weight: '600' },
+                bodyFont: { family: 'plusregular', size: 14 },
+                titleFont: { family: 'plusregular', size: 14, weight: '500' },
             },
         },
     };
@@ -113,13 +114,14 @@ export default function Index() {
         indexAxis: 'y',
         responsive: true,
         maintainAspectRatio: false,
+        devicePixelRatio: window.devicePixelRatio,
         plugins: {
             legend: { display: false },
             title: {
                 display: true,
                 text: 'Status Keaktifan Siswa',
                 color: '#1f2937',
-                font: { family: 'Comfortaa', size: 16, weight: '600' },
+                font: { family: 'plusregular', size: 16, weight: '500' },
             },
             tooltip: {
                 enabled: true,
@@ -127,18 +129,18 @@ export default function Index() {
                 titleColor: '#fff',
                 bodyColor: '#fff',
                 padding: 10,
-                bodyFont: { family: 'Comfortaa', size: 14 },
-                titleFont: { family: 'Comfortaa', size: 14, weight: '600' },
+                bodyFont: { family: 'plusregular', size: 14 },
+                titleFont: { family: 'plusregular', size: 14, weight: '500' },
             },
         },
         scales: {
             x: {
                 grid: { color: '#e5e7eb' },
-                ticks: { color: '#4b5563', beginAtZero: true, stepSize: 1, font: { family: 'Comfortaa', size: 14 } },
+                ticks: { color: '#4b5563', beginAtZero: true, stepSize: 1, font: { family: 'plusregular', size: 14 } },
             },
             y: {
                 grid: { display: false },
-                ticks: { color: '#4b5563', font: { family: 'Comfortaa', size: 14 }, padding: 15 },
+                ticks: { color: '#4b5563', font: { family: 'plusregular', size: 14 }, padding: 15 },
             },
         },
     };
@@ -146,29 +148,23 @@ export default function Index() {
     return (
         <AuthenticatedLayout>
             <Head title="Data Siswa" />
-            <div className="w-full flex-1 overflow-auto pl-2 pr-8 sm:pl-4 sm:pr-8 py-4 font-comfortaa">
+            <div className="w-full flex-1 overflow-auto pl-2 pr-8 sm:pl-4 sm:pr-8 py-4 font-plusregular">
                 {flash.success && (
                     <div className="mb-4 p-3 bg-green-100 text-green-800 rounded shadow">{flash.success}</div>
                 )}
-
-                <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-6">Daftar Data Siswa</h2>
-
+                <h2 className="text-xl sm:text-3xl font-plusmedium text-gray-800 mb-6">Daftar Data Siswa</h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-6 w-full">
                     <div className="bg-gradient-to-r from-sky-500 to-blue-500 text-white p-4 rounded-xl shadow-lg col-span-2 sm:col-span-1">
                         <p className="text-sm opacity-80">Total Siswa</p>
                         <p className="text-xl sm:text-2xl font-bold">{total}</p>
                     </div>
                     {jurusanLabels.map((j, i) => (
-                        <div
-                            key={i}
-                            className="bg-gradient-to-r from-indigo-400 to-blue-600 text-white p-4 rounded-xl shadow-lg"
-                        >
+                        <div key={i} className="bg-gradient-to-r from-indigo-400 to-blue-600 text-white p-4 rounded-xl shadow-lg">
                             <p className="text-sm opacity-80">{j}</p>
                             <p className="text-xl sm:text-2xl font-bold">{jurusanCounts[i]}</p>
                         </div>
                     ))}
                 </div>
-
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 w-full">
                     <div className="bg-white p-4 rounded-xl shadow-lg w-full h-[300px] md:h-[400px]">
                         <Pie data={pieData} options={pieOptions} />
@@ -177,7 +173,6 @@ export default function Index() {
                         <Bar data={barData} options={barOptions} />
                     </div>
                 </div>
-
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4 w-full">
                     <div className="flex items-center w-full md:w-auto md:max-w-xs h-10 border border-gray-300 rounded overflow-hidden">
                         <FaSearch className="bg-blue-600 text-white p-2 h-11 w-9 flex items-center justify-center rounded-l" />
@@ -189,14 +184,13 @@ export default function Index() {
                             className="py-2 px-3 w-full md:w-72 focus:outline-none focus:ring-0 h-full text-gray-700 border-none"
                         />
                     </div>
-
                     <div className="flex items-center gap-4 w-full md:w-auto justify-between flex-wrap">
                         <label className="flex items-center gap-2 text-gray-700 whitespace-nowrap">
                             Tampilkan:
                             <select
                                 value={entries}
                                 onChange={handleEntriesChange}
-                                className="ml-1 border border-gray-300 rounded py-2 px-3 focus:outline-none h-10 bg-white appearance-none"
+                                className="ml-1 border border-gray-500 rounded-xl py-2 px-3 focus:outline-none h-10 bg-white appearance-none"
                             >
                                 <option value={5}>5</option>
                                 <option value={10}>10</option>
@@ -213,19 +207,18 @@ export default function Index() {
                         </Link>
                     </div>
                 </div>
-
-                <div className="overflow-x-auto bg-white rounded-xl shadow-lg w-full">
+                <div className="overflow-x-auto bg-white rounded-xl shadow-lg w-full font-plusmedium">
                     <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-gray-100">
+                        <thead className="bg-gray-100 font-plusmedium">
                             <tr>
-                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 **w-10**">No</th>
-                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 **w-24** whitespace-nowrap">NISN</th>
-                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">Nama Lengkap</th>
-                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 **w-28** whitespace-nowrap">Jurusan</th>
-                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 **w-20** whitespace-nowrap">Angkatan</th>
-                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 **w-28** whitespace-nowrap">Jenis Kelamin</th>
-                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 **w-24** whitespace-nowrap">Status</th>
-                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 **w-36** whitespace-nowrap">Aksi</th>
+                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 w-10">No</th>
+                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 w-24 whitespace-nowrap">NISN</th>
+                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 w-40 whitespace-nowrap">Nama Lengkap</th>
+                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 w-28 whitespace-nowrap">Jurusan</th>
+                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 w-20 whitespace-nowrap">Angkatan</th>
+                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 w-28 whitespace-nowrap">Jenis Kelamin</th>
+                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 w-24 whitespace-nowrap">Status</th>
+                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 w-36 whitespace-nowrap">Aksi</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-200">
@@ -240,18 +233,17 @@ export default function Index() {
                                         <td className="px-4 py-2 text-sm text-gray-700 whitespace-nowrap">{s.jenis_kelamin}</td>
                                         <td className="px-4 py-2 whitespace-nowrap">
                                             {s.is_active == 1 ? (
-                                                <span className="inline-block bg-green-200 text-green-800 text-xs font-semibold px-2 py-1 rounded-full">
+                                                <span className="inline-block bg-green-200 text-green-800 text-xs font-plusregular px-2 py-1 rounded-full">
                                                     Aktif
                                                 </span>
                                             ) : (
-                                                <span className="inline-block bg-red-200 text-red-800 text-xs font-semibold px-2 py-1 rounded-full">
+                                                <span className="inline-block bg-red-200 text-red-800 text-xs font-plusregular px-2 py-1 rounded-full">
                                                     Tidak Aktif
                                                 </span>
                                             )}
                                         </td>
-
                                         <td className="px-4 py-2 whitespace-nowrap">
-                                            <div className="flex **justify-start** items-center gap-3">
+                                            <div className="flex justify-start items-center gap-3">
                                                 <Link
                                                     href={route('students.show', s.id)}
                                                     className="text-blue-500 hover:text-blue-600 transition-transform transform hover:scale-110"
@@ -282,14 +274,12 @@ export default function Index() {
                                 </tr>
                             )}
                         </tbody>
-
                     </table>
                 </div>
                 <div className="mt-3 text-sm text-gray-600">
                     Menampilkan {filteredStudents.length === 0 ? 0 : indexOfFirst + 1} sampai{' '}
                     {Math.min(indexOfLast, filteredStudents.length)} dari {filteredStudents.length} data siswa
                 </div>
-
                 {totalPages > 1 && (
                     <div className="flex justify-center md:justify-end items-center mt-4 gap-2 flex-wrap">
                         {Array.from({ length: totalPages }, (_, i) => (

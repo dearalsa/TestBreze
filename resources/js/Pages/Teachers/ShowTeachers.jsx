@@ -9,11 +9,11 @@ export default function ShowTeachers() {
     return (
       <AuthenticatedLayout>
         <div className="container mx-auto py-8 px-4 md:px-0">
-          <p className="text-center text-gray-500 text-lg">Data guru tidak ditemukan.</p>
+          <p className="text-center text-gray-500 text-lg font-plusregular">Data guru tidak ditemukan.</p>
           <div className="flex justify-center mt-4">
             <Link
               href={route('teachers.index')}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded font-plusmedium"
             >
               Kembali
             </Link>
@@ -36,19 +36,17 @@ export default function ShowTeachers() {
 
       <div className="container mx-auto py-8 px-4 md:px-0">
         <div className="bg-white shadow-lg rounded-2xl overflow-hidden max-w-3xl mx-auto">
-          {/* Header */}
           <div className="flex items-center justify-between p-4 border-b border-gray-200">
-            <h1 className="text-xl md:text-2xl font-semibold text-gray-800">Data Lengkap Guru</h1>
+            <h1 className="text-2xl md:text-2xl font-plusmedium text-gray-800">Data Lengkap Guru</h1>
             <Link
               href={route('teachers.index')}
-              className="flex items-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-1 px-3 rounded-full text-sm transition"
+              className="flex items-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-800 font-plusmedium py-2 px-4 rounded-full text-sm transition"
             >
               <FaArrowLeft /> Kembali
             </Link>
           </div>
 
-          {/* Body */}
-          <div className="p-6 space-y-3">
+          <div className="p-6 space-y-4">
             <InfoRow label="ID" value={teacher.id ?? '-'} />
             <InfoRow label="NIP" value={teacher.nip ?? '-'} />
             <InfoRow label="Nama Lengkap" value={teacher.nama_lengkap ?? '-'} />
@@ -60,7 +58,7 @@ export default function ShowTeachers() {
               label="Status"
               value={
                 <span
-                  className={`inline-block ${statusLabel.bg} ${statusLabel.textColor} text-xs font-semibold px-2 py-1 rounded-full`}
+                  className={`inline-block ${statusLabel.bg} ${statusLabel.textColor} text-sm font-plusmedium px-3 py-1 rounded-full`}
                 >
                   {statusLabel.text}
                 </span>
@@ -75,9 +73,9 @@ export default function ShowTeachers() {
 
 function InfoRow({ label, value }) {
   return (
-    <div className="grid grid-cols-3 gap-2">
-      <div className="font-medium text-gray-700">{label}</div>
-      <div className="col-span-2 text-gray-800 text-sm">{value}</div>
+    <div className="grid grid-cols-3 gap-4">
+      <div className="font-plusmedium text-gray-700 text-base">{label}</div>
+      <div className="col-span-2 text-gray-800 text-base font-plusregular">{value}</div>
     </div>
   );
 }
