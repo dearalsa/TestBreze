@@ -59,7 +59,6 @@ export default function CreatePeminjaman() {
         if (!data.peminjam_id) return showNotification('Masukkan ID Peminjam terlebih dahulu.', 'warning');
         
         try {
-            // FIX: Mengirim data sebagai path parameters ke helper route()
             const res = await axios.get(route('peminjaman.checkPeminjam', { 
                 role: data.role, 
                 id: data.peminjam_id 
@@ -76,7 +75,6 @@ export default function CreatePeminjaman() {
         if (!data.barang_id) return showNotification('Masukkan ID Barang terlebih dahulu.', 'warning');
         
         try {
-            // FIX: Mengirim data sebagai path parameter ke helper route()
             const res = await axios.get(route('peminjaman.checkBarang', { 
                 id: data.barang_id 
             }));
@@ -84,7 +82,7 @@ export default function CreatePeminjaman() {
             if (res.data.status) showNotification(`${res.data.message}: ${res.data.data.nama_barang}`, 'success');
             else showNotification(res.data.message, 'warning');
         } catch (error) {
-            showNotification('Terjadi kesalahan saat memeriksa Barang. Pastikan Kode Barang benar.', 'warning');
+            showNotification('Terjadi kesalahan saat memeriksa barang, pastikan Kode barang benar!', 'warning');
         }
     };
 

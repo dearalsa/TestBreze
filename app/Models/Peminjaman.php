@@ -17,6 +17,8 @@ class Peminjaman extends Model
         'tanggal_peminjam',
         'tanggal_kembali',
         'keterangan',
+        'status',
+        'tanggal_pengembalian',
         'added_by',
     ];
 }

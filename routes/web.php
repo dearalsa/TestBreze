@@ -34,6 +34,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/peminjaman/checkPeminjam/{role}/{id}', [PeminjamanController::class, 'checkPeminjam'])->name('peminjaman.checkPeminjam');
     Route::get('/peminjaman/checkBarang/{id}', [PeminjamanController::class, 'checkBarang'])->name('peminjaman.checkBarang');
 
+    Route::patch('/peminjaman/{id}/kembalikan', [PeminjamanController::class, 'kembalikan'])->name('peminjaman.kembalikan');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
