@@ -11,9 +11,6 @@ class Student extends Model
 {
     use HasFactory;
     use LogsActivity; 
-
-    // ... (property lainnya)
-
     protected $fillable = [
         'nisn',
         'nama_lengkap',

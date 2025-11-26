@@ -177,7 +177,7 @@ export default function IndexPeminjaman() {
                 id="entries"
                 value={entriesPerPage}
                 onChange={handleEntriesChange}
-                className="py-2 px-3 border border-gray-500 rounded-xl text-sm w-full sm:w-auto font-plusregular"
+                className="py-2 px-3 border border-gray-500 rounded-xl text-sm w-full sm:w-auto font-plusregular focus:outline-none focus:ring-0 focus:border-gray-500"
               >
                 <option value={5}>5</option>
                 <option value={10}>10</option>
@@ -194,7 +194,7 @@ export default function IndexPeminjaman() {
                 placeholder="Cari Peminjaman..."
                 value={search}
                 onChange={handleSearchChange}
-                className="pl-10 pr-4 py-2 border border-gray-500 rounded-xl w-full font-plusregular"
+                className="pl-10 pr-4 py-2 border border-gray-500 rounded-xl w-full font-plusregular focus:outline-none focus:ring-0 focus:border-gray-500"
               />
             </div>
 
@@ -219,7 +219,7 @@ export default function IndexPeminjaman() {
                   <th className="px-3 py-3 w-[25%] text-left text-gray-700 whitespace-nowrap font-medium">Tanggal Pinjam</th>
                   <th className="px-3 py-3 w-[25%] text-left text-gray-700 whitespace-nowrap font-medium">Tanggal Kembali</th>
                   <th className="px-3 py-3 w-[10%] text-center text-gray-700 font-medium">Status</th>
-                  <th className="px-3 py-3 w-[25%] text-left text-gray-700 whitespace-nowrap font-medium">Kembali</th>
+                  <th className="px-3 py-3 w-[25%] text-left text-gray-700 whitespace-nowrap font-medium">Tanggal Pengembalian</th>
                   <th className="px-3 py-3 w-[10%] text-center text-gray-700 font-medium">Aksi</th>
                 </tr>
               </thead>

@@ -190,7 +190,7 @@ export default function Index() {
                             <select
                                 value={entries}
                                 onChange={handleEntriesChange}
-                                className="ml-1 border border-gray-500 rounded-xl py-2 px-3 focus:outline-none h-10 bg-white appearance-none"
+                                className="ml-1 border border-gray-500 rounded-xl py-2 px-3 focus:outline-none focus:ring-0 focus:border-current h-10 bg-white appearance-none"
                             >
                                 <option value={5}>5</option>
                                 <option value={10}>10</option>

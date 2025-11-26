@@ -10,6 +10,7 @@ import {
   FaTags,
   FaUserGraduate,
   FaClipboardList,
+  FaFileAlt,
 } from "react-icons/fa";
 import { motion } from "framer-motion";
 import Footer from "@/Components/Footer";
@@ -46,6 +47,7 @@ export default function AuthenticatedLayout({ header, children }) {
     { name: "Data Barang", href: route("inventories.index"), icon: <FaBox /> },
     { name: "Kategori Barang", href: route("categories.index"), icon: <FaTags /> },
     { name: "Peminjaman", href: route("peminjaman.index"), icon: <FaClipboardList /> },
+    { name: "Laporan", href: route("laporan.index"), icon: <FaFileAlt /> },
   ];
 
   const menuItemVariants = {

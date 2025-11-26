@@ -106,7 +106,7 @@ export default function Index() {
                 id="entries"
                 value={entriesPerPage}
                 onChange={(e) => { setEntriesPerPage(Number(e.target.value)); setCurrentPage(1); }}
-                className="py-2 px-3 border border-gray-300 rounded-xl focus:ring-transparent focus:border-gray-400 text-sm w-full sm:w-auto font-plusregular"
+                className="py-2 px-3 border border-gray-500 rounded-xl ffocus:outline-none focus:ring-0 focus:border-current text-sm w-full sm:w-auto font-plusregular"
               >
                 <option value={5}>5</option>
                 <option value={10}>10</option>
@@ -123,7 +123,7 @@ export default function Index() {
                 placeholder="Cari kategori..."
                 value={searchTerm}
                 onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1); }}
-                className="pl-10 pr-4 py-2 border border-gray-300 rounded-xl focus:ring-transparent focus:border-gray-400 w-full font-plusregular"
+                className="pl-10 pr-4 py-2 border border-gray-500 rounded-xl focus:outline-none focus:ring-0 focus:border-current w-full font-plusregular"
               />
             </div>
 
